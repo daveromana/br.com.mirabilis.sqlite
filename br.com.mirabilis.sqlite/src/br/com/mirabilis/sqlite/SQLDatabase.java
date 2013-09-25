@@ -2,7 +2,7 @@ package br.com.mirabilis.sqlite;
 
 import java.util.regex.Pattern;
 
-import br.com.mirabilis.sqlite.exception.SQLConnectionException;
+import br.com.mirabilis.sqlite.exception.SQLManagerException;
 
 /**
  * Valida o nome da base de dados.
@@ -18,11 +18,11 @@ public class SQLDatabase {
 	 * @param databaseName
 	 * @throws SQLConnectionException 
 	 */
-	public SQLDatabase(String databaseName) throws SQLConnectionException {
+	public SQLDatabase(String databaseName) throws SQLManagerException {
 		if(Pattern.matches("^[a-zA-Z]+$",databaseName)){
 			this.database = databaseName.concat(".db");
 		}else{
-			throw new SQLConnectionException("O nome da base de dados é inválido");
+			throw new SQLManagerException("O nome da base de dados é inválido");
 		}
 	}
 
