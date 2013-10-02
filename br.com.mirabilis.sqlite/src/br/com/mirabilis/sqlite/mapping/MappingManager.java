@@ -33,6 +33,11 @@ public class MappingManager {
 		};
 	}
 	
+	/**
+	 * Reader mapping xml file;
+	 * @param in
+	 * @throws IOException
+	 */
 	public MappingManager(InputStream in) throws IOException {
 		XStream xStream = new XStream(new Dom4JDriver());
 		xStream.autodetectAnnotations(true);

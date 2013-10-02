@@ -14,6 +14,4 @@ public class EntityMap {
 	public void setClassPath(String classPath) {
 		this.classPath = classPath;
 	}
-	
-	
 }

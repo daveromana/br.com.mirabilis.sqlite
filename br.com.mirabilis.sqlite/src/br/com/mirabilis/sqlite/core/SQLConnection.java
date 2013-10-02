@@ -1,7 +1,7 @@
 package br.com.mirabilis.sqlite.core;
 
 import java.util.List;
-import br.com.mirabilis.sqlite.SQLDatabase;
+import br.com.mirabilis.sqlite.SQLiteDatabase;
 import br.com.mirabilis.sqlite.SQLEntity;
 import br.com.mirabilis.sqlite.exception.SQLManagerException;
 import android.content.Context;
@@ -28,7 +28,7 @@ import android.util.Log;
 		 * @param database
 		 * @param entitys
 		 */
-		public SQLConnection(Context context,SQLDatabase database, int version) {
+		public SQLConnection(Context context,SQLiteDatabase database, int version) {
 			super(context, database.getDatabaseName(), null, version);
 			this.database = getWritableDatabase();
 		}
@@ -85,12 +85,17 @@ import android.util.Log;
 			
 			private SQLConnection instance;
 			
-			public Builder(Context context, SQLDatabase database, int version) {
+			public Builder(Context context, SQLiteDatabase database, int version) {
 				this.instance = new SQLConnection(context, database, version);
 			}
 			
 			public Builder entitys(List<SQLEntity> entitys){
 				this.instance.entitys = entitys;
+				return this;
+			}
+			
+			public Builder entity(SQLEntity entity) {
+				this.instance.entitys.add(entity);
 				return this;
 			}
 			

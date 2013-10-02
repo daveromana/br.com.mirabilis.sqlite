@@ -7,9 +7,8 @@ import br.com.mirabilis.sqlite.exception.SQLManagerException;
 /**
  * Valida o nome da base de dados.
  * @author Rodrigo Simões Rosa
- *
  */
-public class SQLDatabase {
+public class SQLiteDatabase {
 	
 	private String database;
 	
@@ -18,7 +17,7 @@ public class SQLDatabase {
 	 * @param databaseName
 	 * @throws SQLConnectionException 
 	 */
-	public SQLDatabase(String databaseName) throws SQLManagerException {
+	public SQLiteDatabase(String databaseName) throws SQLManagerException {
 		if(Pattern.matches("^[a-zA-Z]+$",databaseName)){
 			this.database = databaseName.concat(".db");
 		}else{

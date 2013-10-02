@@ -1,7 +1,8 @@
-package br.com.mirabilis.sqlite;
+package br.com.mirabilis.sqlite.manager.view;
 
 import android.app.Activity;
 import android.os.Bundle;
+import br.com.mirabilis.sqlite.R;
 
 public class SqliteActivity extends Activity {
 

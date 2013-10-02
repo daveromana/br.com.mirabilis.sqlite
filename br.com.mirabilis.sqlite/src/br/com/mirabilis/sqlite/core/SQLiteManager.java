@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import android.content.Context;
-import br.com.mirabilis.sqlite.SQLDatabase;
+import br.com.mirabilis.sqlite.SQLiteDatabase;
 import br.com.mirabilis.sqlite.SQLEntity;
 import br.com.mirabilis.sqlite.cypher.CypherFileManager;
 import br.com.mirabilis.sqlite.cypher.CypherType;
@@ -65,9 +65,9 @@ public class SQLiteManager {
 		SQLConnection connection = null; 
 		
 		if(entitys != null){
-			connection = new SQLConnection.Builder(context, new SQLDatabase(getFileSQLite().getAbsolutePath()), version).entitys(entitys).build();
+			connection = new SQLConnection.Builder(context, new SQLiteDatabase(getFileSQLite().getAbsolutePath()), version).entitys(entitys).build();
 		}else{
-			connection = new SQLConnection.Builder(context, new SQLDatabase(getFileSQLite().getAbsolutePath()), version).build();
+			connection = new SQLConnection.Builder(context, new SQLiteDatabase(getFileSQLite().getAbsolutePath()), version).build();
 		}
 		connection.connect();
 	}
