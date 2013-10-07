@@ -18,10 +18,9 @@ public class SQLiteDatabaseFile {
 	 * @param databaseName
 	 * @throws SQLConnectionException
 	 */
-	public SQLiteDatabaseFile(String databaseName, String path) throws SQLiteManagerException {
+	private SQLiteDatabaseFile(String databaseName) throws SQLiteManagerException {
 		if (Pattern.matches("^[a-zA-Z]+$", databaseName)) {
 			this.database = databaseName.concat(".db");
-			this.path = path;
 		} else {
 			throw new SQLiteManagerException("O nome da base de dados é inválido");
 		}
@@ -43,7 +42,36 @@ public class SQLiteDatabaseFile {
 		return path;
 	}
 
+	/**
+	 * Return absolutePath
+	 * @return
+	 */
 	public String getAbsolutePath() {
-		return path.concat(database);
+		if(path != null){
+			return path.concat(database);	
+		}
+		return database;
+	}
+	
+	/**
+	 * Builder of {@link SQLiteDatabaseFile}
+	 * @author Rodrigo Simões Rosa.
+	 */
+	public static class Builder {
+		
+		private SQLiteDatabaseFile instance;
+		
+		public Builder(String databaseName) throws SQLiteManagerException {
+			this.instance = new SQLiteDatabaseFile(databaseName);
+		}
+		
+		public Builder path(String path){
+			this.instance.path = path;
+			return this;
+		}
+		
+		public SQLiteDatabaseFile build(){
+			return this.instance;
+		}
 	}
 }

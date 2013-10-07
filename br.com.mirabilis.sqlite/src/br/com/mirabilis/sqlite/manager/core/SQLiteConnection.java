@@ -1,6 +1,7 @@
 package br.com.mirabilis.sqlite.manager.core;
 
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import android.content.Context;
 import android.database.SQLException;
@@ -18,7 +19,7 @@ import br.com.mirabilis.sqlite.manager.util.SQLiteDatabaseFile;
 public class SQLiteConnection extends SQLiteOpenHelper {
 
 	private static final String TAG = SQLiteConnection.class.getName();
-	private List<SQLiteEntity> entitys;
+	private LinkedHashMap<String, SQLiteEntity> entitys;
 	private SQLiteDatabase database;
 	public Context context;
 
@@ -30,23 +31,24 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase database) {
 		this.database = database;
+		createTables();
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
 				+ newVersion + ", which will destroy all old data");
-		for (SQLiteEntity e : entitys) {
-			db.execSQL("DROP TABLE IF EXISTS " + e.getNameEntity());
+		for (Map.Entry<String, SQLiteEntity> e : entitys.entrySet()) {
+			db.execSQL("DROP TABLE IF EXISTS " + e.getValue().getNameEntity());
 			onCreate(db);
 		}
 	}
 
-
 	public void createTables() {
-		for (SQLiteEntity e : entitys) {
-			this.database.execSQL(e.getQueryCreateEntity());
-			Log.w(TAG, "ENTITY CREATED : " + e.getNameEntity());
+		for (Map.Entry<String, SQLiteEntity> e : entitys.entrySet()) {
+			String query = e.getValue().getQueryCreateEntity();
+			this.database.execSQL(query);
+			Log.w(TAG, "ENTITY CREATED : " + query);
 		}
 	}
 
@@ -74,13 +76,13 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 			this.instance = new SQLiteConnection(context, database, version);
 		}
 
-		public Builder entitys(List<SQLiteEntity> entitys) {
+		public Builder entitys(LinkedHashMap<String, SQLiteEntity> entitys) {
 			this.instance.entitys = entitys;
 			return this;
 		}
 
 		public Builder entity(SQLiteEntity entity) {
-			this.instance.entitys.add(entity);
+			this.instance.entitys.put(entity.getNameEntity(), entity);
 			return this;
 		}
 

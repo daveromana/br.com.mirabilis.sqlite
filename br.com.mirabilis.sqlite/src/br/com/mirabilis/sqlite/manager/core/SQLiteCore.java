@@ -3,9 +3,11 @@ package br.com.mirabilis.sqlite.manager.core;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.os.Environment;
 import br.com.mirabilis.sqlite.cypher.CypherFileManager;
 import br.com.mirabilis.sqlite.cypher.CypherType;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
@@ -22,16 +24,23 @@ public class SQLiteCore {
 	
 	private Context context;
 	private DBMap database;
-	public List<SQLiteEntity> entitys;
+	private LinkedHashMap<String, SQLiteEntity> entitys;
 	
 	private CypherType cypher;
 	private CypherFileManager cypherManager;
 	private SQLiteDatabaseFile databaseName;
 	
-	public SQLiteCore(Context context, SQLiteDatabaseFile databaseName, int version) {
+	private SQLiteCore(Context context, SQLiteDatabaseFile databaseName, int version) {
 		this.context = context;
 		this.databaseName = databaseName;
 		this.version = version;
+	}
+	
+	public void addEntity(SQLiteEntity entity){
+		if(this.entitys == null){
+			this.entitys = new LinkedHashMap<String, SQLiteEntity>();
+		}
+		this.entitys.put(entity.getNameEntity(), entity);
 	}
 
 	/**
@@ -39,20 +48,30 @@ public class SQLiteCore {
 	 * @throws IOException
 	 * @throws SQLiteManagerException
 	 */
-	public void start() throws IOException, SQLiteManagerException {
+	public void start() throws SQLiteManagerException {
 		
 		if(entitys == null){
-			mapping();	
+			try {
+				mapping();
+			} catch (IOException e) {
+				throw new SQLiteManagerException("There is no entity or a mapping file, enter one of these information to initialize the database.");
+			}	
 		}
 		
 		try {
-			if(this.cypher != null){
-				File file = getFileSQLite();
-				this.cypherManager = new CypherFileManager(file, cypher);
-				this.cypherManager.decrypt();
+			File file = getFileSQLite();
+			if(file.exists()){
+				if(this.cypher != null){
+					this.cypherManager = new CypherFileManager(file, cypher);
+					this.cypherManager.decrypt();
+				}else{
+					//TODO do something
+				}
 			}
 		} catch (SQLiteManagerException e) {
 			create();
+		} catch (IOException e) {
+			throw new SQLiteManagerException("An error occurred while decrypting the file.");
 		}
 	}
 
@@ -93,7 +112,7 @@ public class SQLiteCore {
 			pathSQLiteFile = getPathDatabaseByVersionSDK(android.os.Build.VERSION.SDK_INT);
 		}
 		
-		String absolutePath = pathSQLiteFile.concat(databaseName.getAbsolutePath()).concat("/databases");
+		String absolutePath = Environment.getDataDirectory().getPath().concat("/databases/").concat(databaseName.getAbsolutePath());
 		
 		File file = new File(absolutePath);
 		if (file.exists()) {
@@ -116,7 +135,7 @@ public class SQLiteCore {
 	 * Builder of {@link SQLiteCore}
 	 * @author Rodrigo Simões Rosa.
 	 */
-	public class Builder {
+	public static class Builder {
 		
 		private SQLiteCore instance;
 		
@@ -135,7 +154,11 @@ public class SQLiteCore {
 		}
 		
 		public Builder databases(List<SQLiteEntity> entitys){
-			this.instance.entitys = entitys;
+			LinkedHashMap<String, SQLiteEntity> linkedHashMap = new LinkedHashMap<String, SQLiteEntity>();
+			for(SQLiteEntity s: entitys){
+				linkedHashMap.put(s.getNameEntity(), s);
+			}
+			this.instance.entitys = linkedHashMap;
 			return this;
 		}
 		

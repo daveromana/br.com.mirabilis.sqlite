@@ -36,7 +36,7 @@ public abstract class SQLiteEntity implements Entity {
 	 * @param name
 	 * @param fields
 	 */
-	public SQLiteEntity(String name, List<SQLiteField> fields) {
+	protected SQLiteEntity(String name, List<SQLiteField> fields) {
 		this.name = name;
 		this.fields = fields;
 		setPrimaryKey();
