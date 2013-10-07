@@ -42,7 +42,7 @@ public abstract class SQLiteDAO<T> {
 			cursor = this.database.rawQuery(query, null);
 			cursor.moveToFirst();
 		}catch (Throwable e) {
-			throw new SQLiteManagerException("Error " + e.getMessage() +" on execute query " + query);
+			throw new SQLiteManagerException("Error " + e.getMessage() +"  on execute query " + query);
 		}finally{
 			return cursor;
 		}
@@ -53,9 +53,15 @@ public abstract class SQLiteDAO<T> {
 	 * @param sqliteOpenHelper
 	 * @return state of connection;
 	 */
+	@SuppressWarnings("finally")
 	public boolean open(SQLiteOpenHelper sqliteOpenHelper){
-		this.database = sqliteOpenHelper.getWritableDatabase();
-		return this.open();
+		try{
+			this.database = sqliteOpenHelper.getWritableDatabase();	
+		}catch(Throwable e){
+			throw new SQLiteManagerException("Error " + e.getMessage() + " on execute");
+		}finally{
+			return this.open();	
+		}
 	}
 	
 	/**
@@ -105,7 +111,22 @@ public abstract class SQLiteDAO<T> {
 	
 	/**
 	 * Select all {@link T} objects;
-	 * @return List<T>;
+	 * @return {@link List<T>};
 	 */
 	public abstract List<T> select();
+	
+	/**
+	 * Select all {@link T} by limit;
+	 * @param limit Limit of objects to select
+	 * @return {@link List<T>}; 
+	 */
+	public abstract List<T> select(int limit);
+	
+	/**
+	 * Select all {@link T} by limit;
+	 * @param limit Limit of objects to select
+	 * @param page number of page select that depend of limit;
+	 * @return {@link List<T>};
+	 */
+	public abstract List<T> selectByPage(int limit, int page);
 }

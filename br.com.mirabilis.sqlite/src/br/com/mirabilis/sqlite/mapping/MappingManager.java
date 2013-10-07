@@ -49,6 +49,10 @@ public class MappingManager {
 		in.close();
 	}
 	
+	/**
+	 * Get database {@link DBMap}
+	 * @return {@link DBMap}
+	 */
 	public DBMap getDatabase() {
 		return database;
 	}

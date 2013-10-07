@@ -16,12 +16,12 @@ public abstract class SQLiteEntity implements Entity {
 	 * Enumeration that retain types of data and normalization rules;
 	 * @author Rodrigo Simões Rosa
 	 */
-	public enum EntityNormalization {
+	public enum Normalization {
 		PRIMARY_KEY("primary key"), NOT_NULL("not null"), AUTOINCREMENT("autoincrement");
 		
 		private String reserved;
 		
-		private EntityNormalization(String value) {
+		private Normalization(String value) {
 			this.reserved = value;
 		}
 		
@@ -78,14 +78,14 @@ public abstract class SQLiteEntity implements Entity {
 			fieldQuery.append(field.getName());
 			fieldQuery.append(" " + field.getType());
 			if(field.isPrimaryKey()){
-				fieldQuery.append(" " + EntityNormalization.PRIMARY_KEY.toString());
+				fieldQuery.append(" " + Normalization.PRIMARY_KEY.toString());
 			}
 			if(field.isAutoIncrement()){
-				fieldQuery.append(" "+ EntityNormalization.AUTOINCREMENT.toString());
+				fieldQuery.append(" "+ Normalization.AUTOINCREMENT.toString());
 			}
 			
 			if(field.isNotNull()){
-				fieldQuery.append(" "+ EntityNormalization.NOT_NULL.toString());
+				fieldQuery.append(" "+ Normalization.NOT_NULL.toString());
 			}
 			fieldQuery.append(");");
 		}

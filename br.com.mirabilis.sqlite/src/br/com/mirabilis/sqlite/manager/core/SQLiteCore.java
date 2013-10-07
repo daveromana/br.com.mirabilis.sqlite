@@ -1,4 +1,4 @@
-package br.com.mirabilis.sqlite.core;
+package br.com.mirabilis.sqlite.manager.core;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,33 +6,40 @@ import java.io.InputStream;
 import java.util.List;
 
 import android.content.Context;
-import br.com.mirabilis.sqlite.SQLiteDatabase;
-import br.com.mirabilis.sqlite.SQLEntity;
 import br.com.mirabilis.sqlite.cypher.CypherFileManager;
 import br.com.mirabilis.sqlite.cypher.CypherType;
-import br.com.mirabilis.sqlite.exception.SQLManagerException;
+import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
+import br.com.mirabilis.sqlite.manager.model.SQLiteEntity;
+import br.com.mirabilis.sqlite.manager.util.SQLiteDatabaseFile;
 import br.com.mirabilis.sqlite.mapping.MappingManager;
 import br.com.mirabilis.sqlite.mapping.MappingManager.Mapping;
 import br.com.mirabilis.sqlite.mapping.model.DBMap;
 
-public class SQLiteManager {
-
+public class SQLiteCore {
+	
+	private int version;
 	private String pathSQLiteFile;
-	private String databaseName;
+	
 	private Context context;
 	private DBMap database;
-	public List<SQLEntity> entitys;
+	public List<SQLiteEntity> entitys;
 	
 	private CypherType cypher;
 	private CypherFileManager cypherManager;
-	private int version;
+	private SQLiteDatabaseFile databaseName;
 	
-	public SQLiteManager(Context context, int version) {
+	public SQLiteCore(Context context, SQLiteDatabaseFile databaseName, int version) {
 		this.context = context;
+		this.databaseName = databaseName;
 		this.version = version;
 	}
 
-	public void start() throws IOException, SQLManagerException {
+	/**
+	 * Initialize database;
+	 * @throws IOException
+	 * @throws SQLiteManagerException
+	 */
+	public void start() throws IOException, SQLiteManagerException {
 		
 		if(entitys == null){
 			mapping();	
@@ -41,11 +48,10 @@ public class SQLiteManager {
 		try {
 			if(this.cypher != null){
 				File file = getFileSQLite();
-				file.renameTo(new File(file.getAbsolutePath().concat(".db")));
 				this.cypherManager = new CypherFileManager(file, cypher);
 				this.cypherManager.decrypt();
 			}
-		} catch (SQLManagerException e) {
+		} catch (SQLiteManagerException e) {
 			create();
 		}
 	}
@@ -61,13 +67,17 @@ public class SQLiteManager {
 		database = map.getDatabase();
 	}
 
-	public void create() throws SQLManagerException {
-		SQLConnection connection = null; 
+	/**
+	 * Create database;
+	 * @throws SQLiteManagerException
+	 */
+	public void create() throws SQLiteManagerException {
+		SQLiteConnection connection = null; 
 		
 		if(entitys != null){
-			connection = new SQLConnection.Builder(context, new SQLiteDatabase(getFileSQLite().getAbsolutePath()), version).entitys(entitys).build();
+			connection = new SQLiteConnection.Builder(context, databaseName, version).entitys(entitys).build();
 		}else{
-			connection = new SQLConnection.Builder(context, new SQLiteDatabase(getFileSQLite().getAbsolutePath()), version).build();
+			connection = new SQLiteConnection.Builder(context, databaseName, version).build();
 		}
 		connection.connect();
 	}
@@ -75,20 +85,21 @@ public class SQLiteManager {
 	/**
 	 * Get path with database folder concat
 	 * @return
-	 * @throws SQLManagerException
+	 * @throws SQLiteManagerException
 	 */
-	private File getFileSQLite() throws SQLManagerException {
+	private File getFileSQLite() throws SQLiteManagerException {
 		
 		if(pathSQLiteFile == null){
 			pathSQLiteFile = getPathDatabaseByVersionSDK(android.os.Build.VERSION.SDK_INT);
 		}
 		
-		String absolutePath = pathSQLiteFile.concat(databaseName).concat("/databases");
+		String absolutePath = pathSQLiteFile.concat(databaseName.getAbsolutePath()).concat("/databases");
+		
 		File file = new File(absolutePath);
 		if (file.exists()) {
 			return file;
 		}
-		throw new SQLManagerException("File SQLite not exist in directory :" + absolutePath);
+		throw new SQLiteManagerException("File SQLite not exist in directory : " + absolutePath);
 	}
 
 	public String getPathDatabaseByVersionSDK(int sdk) {
@@ -102,24 +113,19 @@ public class SQLiteManager {
 	}
 	
 	/**
-	 * Builder of {@link SQLiteManager}
+	 * Builder of {@link SQLiteCore}
 	 * @author Rodrigo Simões Rosa.
 	 */
 	public class Builder {
 		
-		private SQLiteManager instance;
+		private SQLiteCore instance;
 		
-		public Builder(Context context, int version) {
-			this.instance = new SQLiteManager(context, version);
+		public Builder(Context context, SQLiteDatabaseFile databaseName, int version) {
+			this.instance = new SQLiteCore(context, databaseName, version);
 		}
 		
 		public Builder pathSQLiteFile(String path){
 			this.instance.pathSQLiteFile = path;
-			return this;
-		}
-		
-		public Builder databaseName(String databaseName){
-			this.instance.databaseName = databaseName;
 			return this;
 		}
 		
@@ -128,12 +134,12 @@ public class SQLiteManager {
 			return this;
 		}
 		
-		public Builder databases(List<SQLEntity> entitys){
+		public Builder databases(List<SQLiteEntity> entitys){
 			this.instance.entitys = entitys;
 			return this;
 		}
 		
-		public SQLiteManager build(){
+		public SQLiteCore build(){
 			return this.instance;
 		}
 	}
