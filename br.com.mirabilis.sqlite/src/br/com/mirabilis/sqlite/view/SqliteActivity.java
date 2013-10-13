@@ -1,4 +1,4 @@
-package br.com.mirabilis.sqlite.manager.view;
+package br.com.mirabilis.sqlite.view;
 
 import android.app.Activity;
 import android.os.Bundle;
