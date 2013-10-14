@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import android.util.Base64;
+import android.util.Log;
 
 public class CypherFileManager {
 
@@ -31,8 +32,7 @@ public class CypherFileManager {
 		
 		switch (cypherType) {
 			case BASE64:
-				contentDecrypted = Base64.decode(content.toString(),
-						Base64.DEFAULT);
+				contentDecrypted = Base64.decode(content.toString().getBytes(),Base64.DEFAULT);
 				break;
 		}
 
@@ -72,8 +72,7 @@ public class CypherFileManager {
 		
 		switch (cypherType) {
 			case BASE64:
-				contentDecrypted = Base64.encode(content.toString().getBytes(),
-						Base64.DEFAULT);
+				contentDecrypted = Base64.encode(content.toString().getBytes(), Base64.DEFAULT);
 				break;
 		}
 		

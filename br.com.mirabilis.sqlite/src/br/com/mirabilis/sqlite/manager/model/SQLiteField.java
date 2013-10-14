@@ -1,6 +1,6 @@
 package br.com.mirabilis.sqlite.manager.model;
 
-import android.database.sqlite.SQLiteException;
+import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
 
 /**
  * Class of field of entity
@@ -56,32 +56,10 @@ public class SQLiteField {
 	 * Constructor;
 	 * @param name
 	 * @param type
-	 * @param notNull
-	 * @param autoIncrement
-	 * @param primaryKey
-	 * @throws SQLiteException
-	 */
-	public SQLiteField(String name, SQLiteType type, boolean notNull, boolean autoIncrement, boolean primaryKey) throws SQLiteException {
+	 */ 
+	private SQLiteField(String name, SQLiteType type) {
 		this.name = name;
 		this.type = type;
-		this.primaryKey = primaryKey;
-		this.notNull = notNull;
-		if(autoIncrement){
-			if (!(this.type.equals(SQLiteType.INTEGER))){
-				throw new SQLiteException("It is not possible to perform an auto increment than the type Integer!");
-			}else{
-				this.autoIncrement = autoIncrement;
-			}
-		}
-	}
-	
-	/**
-	 * Construtor;
-	 * @param name
-	 * @param type
-	 */
-	public SQLiteField(String name, SQLiteType type){
-		this(name,type, false, false, false);
 	}
 
 	/**
@@ -117,6 +95,21 @@ public class SQLiteField {
 	}
 	
 	/**
+	 * AutoIncrement, verify if {@link #type} is {@link SQLiteType #INTEGER}
+	 * @param value
+	 * @throws SQLiteManagerException
+	 */
+	public void setAutoIncrement(boolean value) throws SQLiteManagerException {
+		if(value){
+			if (!(this.type.equals(SQLiteType.INTEGER))){
+				throw new SQLiteManagerException("It is not possible to perform an auto increment than the type Integer!");
+			}else{
+				this.autoIncrement = value;
+			}
+		}
+	}
+	
+	/**
 	 * Return if is field is autoIncrement
 	 * @return {@link SQLiteField#autoIncrement} = true
 	 */
@@ -127,6 +120,38 @@ public class SQLiteField {
 	@Override
 	public String toString() {
 		return name;
+	}
+	
+	/**
+	 * Builder of {@link SQLiteField};
+	 * @author Rodrigo Simões Rosa
+	 */
+	public static class Builder {
+		
+		private SQLiteField instance;
+		
+		public Builder(String name, SQLiteType type) {
+			this.instance = new SQLiteField(name, type);
+		}
+		
+		public Builder notNull(boolean notNull){
+			this.instance.notNull = notNull;
+			return this;
+		}
+		
+		public Builder primaryKey(boolean primaryKey){
+			this.instance.primaryKey = primaryKey;
+			return this;
+		}
+		
+		public Builder autoIncrement(boolean autoIncrement) throws SQLiteManagerException {
+			this.instance.setAutoIncrement(autoIncrement);
+			return this;
+		}
+		
+		public SQLiteField build(){
+			return this.instance;
+		}
 	}
 }
 

@@ -7,7 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import android.content.Context;
-import android.os.Environment;
 import br.com.mirabilis.sqlite.cypher.CypherFileManager;
 import br.com.mirabilis.sqlite.cypher.CypherType;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
@@ -48,8 +47,7 @@ public class SQLiteCore {
 	 * @throws IOException
 	 * @throws SQLiteManagerException
 	 */
-	public void start() throws SQLiteManagerException {
-		
+	public void start() throws SQLiteManagerException, IOException {
 		if(entitys == null){
 			try {
 				mapping();
@@ -60,16 +58,17 @@ public class SQLiteCore {
 		
 		try {
 			File file = getFileSQLite();
-			if(file.exists()){
-				if(this.cypher != null){
-					this.cypherManager = new CypherFileManager(file, cypher);
-					this.cypherManager.decrypt();
-				}else{
-					//TODO do something
-				}
+			if(this.cypher == null){
+				create();
+			}else{
+				this.cypherManager = new CypherFileManager(file, cypher);
+				this.cypherManager.decrypt();
+				create();
 			}
 		} catch (SQLiteManagerException e) {
 			create();
+			this.cypherManager = new CypherFileManager(getPathSQLiteDefaultApplication(context, databaseName.getDatabase()), cypher);
+			this.cypherManager.encrypt();
 		} catch (IOException e) {
 			throw new SQLiteManagerException("An error occurred while decrypting the file.");
 		}
@@ -107,12 +106,13 @@ public class SQLiteCore {
 	 * @throws SQLiteManagerException
 	 */
 	private File getFileSQLite() throws SQLiteManagerException {
+		String absolutePath = null;
 		
 		if(pathSQLiteFile == null){
-			pathSQLiteFile = getPathDatabaseByVersionSDK(android.os.Build.VERSION.SDK_INT);
+			absolutePath = getPathSQLiteDefaultApplication(context, databaseName.getDatabase()).getAbsolutePath();
+		}else{
+			absolutePath = pathSQLiteFile;
 		}
-		
-		String absolutePath = Environment.getDataDirectory().getPath().concat("/databases/").concat(databaseName.getAbsolutePath());
 		
 		File file = new File(absolutePath);
 		if (file.exists()) {
@@ -121,7 +121,23 @@ public class SQLiteCore {
 		throw new SQLiteManagerException("File SQLite not exist in directory : " + absolutePath);
 	}
 
-	public String getPathDatabaseByVersionSDK(int sdk) {
+	/**
+	 * Recovery path of file .db for application.
+	 * @param context
+	 * @param databaseName DATABASENAME + ".db"
+	 * @return File of database
+	 */
+	public static File getPathSQLiteDefaultApplication(Context context, String databaseName){
+		return context.getDatabasePath(databaseName);
+	}
+	
+	/**
+	 * Retorn o path depend of Version SDK.
+	 * @param context
+	 * @param sdk
+	 * @return
+	 */
+	public static String getPathDatabaseByVersionSDK(Context context, int sdk) {
 		StringBuilder path = new StringBuilder();
 		if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
 			path.append("/data/data/");

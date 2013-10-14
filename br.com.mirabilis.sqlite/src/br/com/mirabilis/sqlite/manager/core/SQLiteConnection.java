@@ -31,7 +31,9 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase database) {
 		this.database = database;
-		createTables();
+		if(entitys != null){
+			createTables();	
+		}
 	}
 
 	@Override
@@ -78,6 +80,7 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 
 		public Builder entitys(LinkedHashMap<String, SQLiteEntity> entitys) {
 			this.instance.entitys = entitys;
+			this.instance.createTables();
 			return this;
 		}
 
