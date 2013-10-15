@@ -6,7 +6,7 @@ import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
  * Class of field of entity
  * @author Rodrigo Simões Rosa
  */
-public class SQLiteField {
+public final class SQLiteField {
 	
 	/**
 	 * Enumeration that contain's types data of sqlite;
@@ -24,6 +24,20 @@ public class SQLiteField {
 		@Override
 		public String toString() {
 			return this.type; 
+		}
+
+		/**
+		 * Recovery {@link SQLiteType} by {@link String}
+		 * @param type
+		 * @return
+		 */
+		public static SQLiteType getValue(String type) {
+			for(SQLiteField.SQLiteType t : values()){
+				if(t.toString().equalsIgnoreCase(type)){
+					return t;
+				}
+			}
+			return null;
 		}
 	}
 	

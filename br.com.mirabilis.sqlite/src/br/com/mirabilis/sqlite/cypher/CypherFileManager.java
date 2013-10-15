@@ -5,14 +5,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
 import android.util.Base64;
-import android.util.Log;
 
 public class CypherFileManager {
 
 	private File file;
 	private CypherType cypherType;
-
+	
 	public CypherFileManager(File file, CypherType cypherType) {
 		this.file = file;
 		this.cypherType = cypherType;

@@ -25,11 +25,6 @@ public abstract class SQLiteDAO<T> {
 	}
 	
 	/**
-	 * Constructor;
-	 */
-	public SQLiteDAO() {}
-	
-	/**
 	 * Execute query
 	 * @param query
 	 * @return {@link Cursor}

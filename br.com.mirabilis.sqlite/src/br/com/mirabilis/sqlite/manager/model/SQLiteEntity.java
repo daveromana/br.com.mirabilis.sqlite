@@ -6,11 +6,10 @@ import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
 import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteType;
 
 /**
- * Class abstract of {@link SQLiteEntity}
- * 
+ * Class of {@link SQLiteEntity}
  * @author Rodrigo Simões Rosa
  */
-public abstract class SQLiteEntity implements Entity {
+public final class SQLiteEntity {
 
 	private List<SQLiteField> fields;
 	private String name;
@@ -123,23 +122,4 @@ public abstract class SQLiteEntity implements Entity {
 	public Object[] getColumns() {
 		return this.fields.toArray();
 	}
-
-	interface Entity {
-
-		public String getQueryCreateEntity();
-
-		public String getNameEntity();
-	}
-}
-
-/**
- * Interface of entitys;
- * 
- * @author Rodrigo Simões Rosa.
- */
-interface Entity {
-
-	public String getQueryCreateEntity();
-
-	public String getNameEntity();
 }

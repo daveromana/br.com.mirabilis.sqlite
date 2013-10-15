@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import br.com.mirabilis.sqlite.annotation.SQLiteAnnotation;
 import br.com.mirabilis.sqlite.cypher.CypherFileManager;
 import br.com.mirabilis.sqlite.cypher.CypherType;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
@@ -32,6 +33,14 @@ public class SQLiteCore {
 	private CypherType cypher;
 	private CypherFileManager cypherManager;
 	private SQLiteDatabaseFile databaseName;
+	private SQLiteConnection connection;
+	
+	/**
+	 * Default crypto;
+	 */
+	{
+		cypher = CypherType.BASE64;
+	}
 	
 	private SQLiteCore(Context context, SQLiteDatabaseFile databaseName, int version) {
 		this.context = context;
@@ -39,10 +48,13 @@ public class SQLiteCore {
 		this.version = version;
 	}
 	
-	public void addEntity(SQLiteEntity entity){
+	public void addEntity(Class<?> classHasAnnotation) throws SQLiteManagerException{
 		if(this.entitys == null){
 			this.entitys = new LinkedHashMap<String, SQLiteEntity>();
 		}
+		
+		SQLiteEntity entity = SQLiteAnnotation.getValuesFromAnnotation(classHasAnnotation);
+		
 		this.entitys.put(entity.getNameEntity(), entity);
 	}
 
@@ -77,6 +89,10 @@ public class SQLiteCore {
 			throw new SQLiteManagerException("An error occurred while decrypting the file.");
 		}
 	}
+	
+	public SQLiteDatabase getDatabase(){
+		return connection.getWritableDatabase();
+	}
 
 	/**
 	 * Do mapping class entitys
@@ -94,7 +110,7 @@ public class SQLiteCore {
 	 * @throws SQLiteManagerException
 	 */
 	public void create() throws SQLiteManagerException {
-		SQLiteConnection connection = null; 
+		connection = null; 
 		
 		if(entitys != null){
 			connection = new SQLiteConnection.Builder(context, databaseName, version).entitys(entitys).build();
@@ -173,9 +189,10 @@ public class SQLiteCore {
 			return this;
 		}
 		
-		public Builder databases(List<SQLiteEntity> entitys){
+		public Builder databases(Class<?> ... entitys) throws SQLiteManagerException{
 			LinkedHashMap<String, SQLiteEntity> linkedHashMap = new LinkedHashMap<String, SQLiteEntity>();
-			for(SQLiteEntity s: entitys){
+			for(Class<?> classHasAnnotation: entitys){
+				SQLiteEntity s = SQLiteAnnotation.getValuesFromAnnotation(classHasAnnotation);
 				linkedHashMap.put(s.getNameEntity(), s);
 			}
 			this.instance.entitys = linkedHashMap;
