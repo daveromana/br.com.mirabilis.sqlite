@@ -16,6 +16,10 @@ import br.com.mirabilis.sqlite.mapping.MappingManager;
 import br.com.mirabilis.sqlite.mapping.MappingManager.Mapping;
 import br.com.mirabilis.sqlite.mapping.model.DBMap;
 
+/**
+ * {@link SQLiteCore} Class of core from br.com.mirabilis.sqlite.
+ * @author Rodrigo Simões Rosa
+ */
 public class SQLiteCore {
 	
 	private int version;
