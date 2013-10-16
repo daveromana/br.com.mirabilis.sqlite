@@ -22,7 +22,7 @@ public class SQLiteAnnotation {
 		List<SQLiteAnnotationField> fieldsAnnotation = null;
 		if(classHasAnnotation.isAnnotationPresent(SQLiteAnnotationEntity.class)){
 			entityAnnotation = classHasAnnotation.getAnnotation(SQLiteAnnotationEntity.class);
-			for(Field field : classHasAnnotation.getFields()){
+			for(Field field : classHasAnnotation.getDeclaredFields()){
 				if(field.isAnnotationPresent(SQLiteAnnotationField.class)){
 					
 					/**
