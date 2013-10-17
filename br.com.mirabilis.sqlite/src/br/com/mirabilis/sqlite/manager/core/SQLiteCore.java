@@ -2,7 +2,6 @@ package br.com.mirabilis.sqlite.manager.core;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.LinkedHashMap;
 
 import android.content.Context;
@@ -13,9 +12,6 @@ import br.com.mirabilis.sqlite.cypher.CypherType;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
 import br.com.mirabilis.sqlite.manager.model.SQLiteEntity;
 import br.com.mirabilis.sqlite.manager.util.SQLiteDatabaseFile;
-import br.com.mirabilis.sqlite.mapping.MappingManager;
-import br.com.mirabilis.sqlite.mapping.MappingManager.Mapping;
-import br.com.mirabilis.sqlite.mapping.model.DBMap;
 
 /**
  * {@link SQLiteCore} Class of core from br.com.mirabilis.sqlite.
@@ -27,7 +23,6 @@ public class SQLiteCore {
 	private String pathSQLiteFile;
 	
 	private Context context;
-	private DBMap database;
 	private LinkedHashMap<String, SQLiteEntity> entitys;
 	
 	private CypherType cypher;
@@ -64,12 +59,8 @@ public class SQLiteCore {
 	 * @throws SQLiteManagerException
 	 */
 	public void start() throws SQLiteManagerException, IOException {
-		if(entitys == null){
-			try {
-				mapping();
-			} catch (IOException e) {
-				throw new SQLiteManagerException("There is no entity or a mapping file, enter one of these information to initialize the database.");
-			}	
+		if(this.entitys == null || this.entitys.isEmpty()){
+			throw new SQLiteManagerException("There is no entity or a mapping file, enter one of these information to initialize the database.");
 		}
 		
 		try {
@@ -92,17 +83,6 @@ public class SQLiteCore {
 	
 	public SQLiteDatabase getDatabase(){
 		return connection.getWritableDatabase();
-	}
-
-	/**
-	 * Do mapping class entitys
-	 * 
-	 * @throws IOException
-	 */
-	private void mapping() throws IOException {
-		InputStream in = this.context.getAssets().open(Mapping.MAPPING_FILE.toString());
-		MappingManager map = new MappingManager(in);
-		database = map.getDatabase();
 	}
 
 	/**
