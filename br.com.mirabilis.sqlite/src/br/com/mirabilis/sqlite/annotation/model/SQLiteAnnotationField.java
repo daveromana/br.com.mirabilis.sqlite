@@ -17,4 +17,7 @@ import java.lang.annotation.Target;
 public @interface SQLiteAnnotationField {
 	String name();
 	String type();
+	boolean primaryKey() default false;
+	boolean autoIncrement() default false;
+	boolean notNull() default false;
 }

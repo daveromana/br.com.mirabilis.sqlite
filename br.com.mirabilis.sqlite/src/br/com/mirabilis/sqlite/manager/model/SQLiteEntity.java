@@ -3,7 +3,6 @@ package br.com.mirabilis.sqlite.manager.model;
 import java.util.List;
 
 import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
-import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteType;
 
 /**
  * Class of {@link SQLiteEntity}
@@ -45,23 +44,6 @@ public final class SQLiteEntity {
 	public SQLiteEntity(String name, List<SQLiteField> fields) throws SQLiteManagerException {
 		this.name = name;
 		this.fields = fields;
-		setPrimaryKey();
-	}
-
-	/**
-	 * Set PrimaryKey in entity;
-	 * @throws SQLiteManagerException 
-	 */
-	private void setPrimaryKey() throws SQLiteManagerException {
-		boolean value = false;
-		for (SQLiteField field : this.fields) {
-			if (field.isPrimaryKey()) {
-				value = true;
-			}
-		}
-		if (!value) {
-			this.fields.add(0, new SQLiteField.Builder(SQLiteField.Field.ID.toString(),SQLiteType.INTEGER).notNull(false).autoIncrement(true).primaryKey(true).build());
-		}
 	}
 
 	/**

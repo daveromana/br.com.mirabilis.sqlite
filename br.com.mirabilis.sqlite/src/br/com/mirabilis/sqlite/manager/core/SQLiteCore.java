@@ -3,10 +3,11 @@ package br.com.mirabilis.sqlite.manager.core;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import br.com.mirabilis.sqlite.annotation.SQLiteAnnotation;
+import br.com.mirabilis.sqlite.annotation.SQLiteParseAnnotation;
 import br.com.mirabilis.sqlite.cypher.CypherFileManager;
 import br.com.mirabilis.sqlite.cypher.CypherType;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
@@ -41,16 +42,6 @@ public class SQLiteCore {
 		this.context = context;
 		this.databaseName = databaseName;
 		this.version = version;
-	}
-	
-	public void addEntity(Class<?> classHasAnnotation) throws SQLiteManagerException{
-		if(this.entitys == null){
-			this.entitys = new LinkedHashMap<String, SQLiteEntity>();
-		}
-		
-		SQLiteEntity entity = SQLiteAnnotation.getValuesFromAnnotation(classHasAnnotation);
-		
-		this.entitys.put(entity.getNameEntity(), entity);
 	}
 
 	/**
@@ -170,12 +161,18 @@ public class SQLiteCore {
 		}
 		
 		public Builder databases(Class<?> ... entitys) throws SQLiteManagerException{
-			LinkedHashMap<String, SQLiteEntity> linkedHashMap = new LinkedHashMap<String, SQLiteEntity>();
-			for(Class<?> classHasAnnotation: entitys){
-				SQLiteEntity s = SQLiteAnnotation.getValuesFromAnnotation(classHasAnnotation);
-				linkedHashMap.put(s.getNameEntity(), s);
+			if(this.instance.entitys == null){
+				this.instance.entitys = new LinkedHashMap<String, SQLiteEntity>();
 			}
-			this.instance.entitys = linkedHashMap;
+			for(Class<?> classHasAnnotation: entitys){
+				SQLiteEntity s = SQLiteParseAnnotation.getValuesFromAnnotation(classHasAnnotation);
+				this.instance.entitys.put(s.getNameEntity(), s);
+			}
+			return this;
+		}
+		
+		public Builder database(List<Class<?>> list) throws SQLiteManagerException {
+			databases((Class<?> [])list.toArray());
 			return this;
 		}
 		
