@@ -15,9 +15,26 @@ public interface DAO<T> {
 	/**
 	 * Insert {@link ContentValues} data;
 	 * @param data
-	 * @return state of transaction;
+	 * @return
+	 * @throws SQLiteManagerException
 	 */
-	public boolean insert(ContentValues data) throws SQLiteManagerException;
+	public long insert(T data) throws SQLiteManagerException;
+	
+	/**
+	 * Insert and return boolean
+	 * @param data
+	 * @return
+	 * @throws SQLiteManagerException
+	 */
+	public boolean add(T data) throws SQLiteManagerException;
+	
+	/**
+	 * Insert and return T
+	 * @param data
+	 * @return
+	 * @throws SQLiteManagerException
+	 */
+	public T persist(T data) throws SQLiteManagerException;
 	
 	/**
 	 * Delete {@link T} data;
@@ -31,15 +48,17 @@ public interface DAO<T> {
 	 * Update {@link T} data;
 	 * @param data
 	 * @return state of transaction;
+	 * @throws IllegalAccessException 
+	 * @throws IllegalArgumentException 
 	 */
-	public boolean update(T data) throws SQLiteManagerException;
+	public boolean update(T data) throws SQLiteManagerException, IllegalArgumentException, IllegalAccessException;
 	
 	/**
 	 * Select {@link T} object by ID;
 	 * @param id parameter to select;
 	 * @return {@link T};
 	 */
-	public T selectByID(Integer id) throws SQLiteManagerException;
+	public T selectByID(long id) throws SQLiteManagerException;
 	
 	/**
 	 * Select all {@link T} objects;

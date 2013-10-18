@@ -1,22 +1,21 @@
 package br.com.mirabilis.sqlite.manager.model;
 
-import android.database.Cursor;
 import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationField;
 
 /**
  * Class abstract that represent's Table's inside SQLite.
  * @author Rodrigo Simões Rosa
  */
-public abstract class SQLiteTable<T> {
+public abstract class SQLiteTable {
 
 	@SQLiteAnnotationField(name="_id", type="integer", autoIncrement = true, notNull = true, primaryKey = true)
-	protected Integer _id;
+	protected long _id;
 	
 	/**
 	 * Get ID
 	 * @return
 	 */
-	public Integer getId() {
+	public long getId() {
 		return _id;
 	}
 	
@@ -24,14 +23,9 @@ public abstract class SQLiteTable<T> {
 	 * Set ID
 	 * @param id
 	 */
-	public void setId(Integer id){
+	public void setId(long id){
 		this._id = id;
 	}
 
-	/**
-	 * Return object parsed;
-	 * @param cursor don't forget call cursor.close(), before do parser;
-	 * @return
-	 */
-	public abstract T parser(Cursor cursor);
+	
 }
