@@ -72,6 +72,10 @@ public class SQLiteCore {
 		}
 	}
 	
+	/**
+	 * Return {@link SQLiteDatabase}
+	 * @return
+	 */
 	public SQLiteDatabase getDatabase(){
 		return connection.getWritableDatabase();
 	}
