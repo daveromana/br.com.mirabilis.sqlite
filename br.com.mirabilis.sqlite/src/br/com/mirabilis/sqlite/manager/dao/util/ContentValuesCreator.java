@@ -17,16 +17,17 @@ public class ContentValuesCreator {
 		for(Field field : c.getDeclaredFields()){
 			
 			if(field.isAnnotationPresent(SQLiteAnnotationField.class)){
-				Object obj = field.get(data);
+				field.setAccessible(true);
+				Object value = field.get(data);
 				
 				//TODO I know it's smelling like shit, but it was the first solution that I found (XGH) :B
-				switch (ContentValuesType.getType(obj)) {
+				switch (ContentValuesType.getType(value)) {
 					case BOOLEAN:
-						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), field.getBoolean(data));
+						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), (Boolean) value);
 					break;
 
 					case BYTE:
-						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), field.getByte(data));
+						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), (Byte) value);
 					break;
 					
 					case BYTE_ARRAY:
@@ -34,27 +35,27 @@ public class ContentValuesCreator {
 					break;
 					
 					case DOUBLE:
-						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), field.getDouble(data));
+						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), (Double) value);
 					break;
 					
 					case FLOAT:
-						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), field.getFloat(data));
+						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), (Float) value);
 					break;
 					
 					case INTEGER:
-						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), field.getInt(data));
+						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(),  (Integer) value);
 					break;
 					
 					case LONG:
-						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), field.getLong(data));
+						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(),  (Long) value);
 					break;
 					
 					case SHORT:
-						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), field.getShort(data));
+						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), (Short) value);
 					break;
 					
 					case STRING:
-						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), String.valueOf(field.get(data)));
+						contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), (String) value);
 					break;
 					
 					default:

@@ -2,7 +2,7 @@ package br.com.mirabilis.sqlite.manager.util;
 
 import java.util.regex.Pattern;
 
-import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
+import br.com.mirabilis.sqlite.manager.exception.SQLiteErrorException;
 
 /**
  * Validate name of database;
@@ -18,11 +18,11 @@ public class SQLiteDatabaseFile {
 	 * @param databaseName
 	 * @throws SQLConnectionException
 	 */
-	private SQLiteDatabaseFile(String databaseName) throws SQLiteManagerException {
+	private SQLiteDatabaseFile(String databaseName) throws SQLiteErrorException {
 		if (Pattern.matches("^[a-zA-Z]+$", databaseName)) {
 			this.database = databaseName.concat(".db");
 		} else {
-			throw new SQLiteManagerException("O nome da base de dados é inválido");
+			throw new SQLiteErrorException("O nome da base de dados é inválido");
 		}
 	}
 
@@ -61,7 +61,7 @@ public class SQLiteDatabaseFile {
 		
 		private SQLiteDatabaseFile instance;
 		
-		public Builder(String databaseName) throws SQLiteManagerException {
+		public Builder(String databaseName) throws SQLiteErrorException {
 			this.instance = new SQLiteDatabaseFile(databaseName);
 		}
 		

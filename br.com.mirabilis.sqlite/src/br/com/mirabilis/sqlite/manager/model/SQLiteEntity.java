@@ -2,7 +2,7 @@ package br.com.mirabilis.sqlite.manager.model;
 
 import java.util.List;
 
-import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
+import br.com.mirabilis.sqlite.manager.exception.SQLiteErrorException;
 
 /**
  * Class of {@link SQLiteEntity}
@@ -39,9 +39,9 @@ public final class SQLiteEntity {
 	 * 
 	 * @param name
 	 * @param fields
-	 * @throws SQLiteManagerException 
+	 * @throws SQLiteErrorException 
 	 */
-	public SQLiteEntity(String name, List<SQLiteField> fields) throws SQLiteManagerException {
+	public SQLiteEntity(String name, List<SQLiteField> fields) throws SQLiteErrorException {
 		this.name = name;
 		this.fields = fields;
 	}

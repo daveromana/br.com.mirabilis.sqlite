@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import br.com.mirabilis.sqlite.annotation.SQLiteParseAnnotation;
 import br.com.mirabilis.sqlite.cypher.CypherFileManager;
 import br.com.mirabilis.sqlite.cypher.CypherType;
-import br.com.mirabilis.sqlite.manager.exception.SQLiteManagerException;
+import br.com.mirabilis.sqlite.manager.exception.SQLiteErrorException;
 import br.com.mirabilis.sqlite.manager.model.SQLiteEntity;
 import br.com.mirabilis.sqlite.manager.util.SQLiteDatabaseFile;
 
@@ -47,29 +47,29 @@ public class SQLiteCore {
 	/**
 	 * Initialize database;
 	 * @throws IOException
-	 * @throws SQLiteManagerException
+	 * @throws SQLiteErrorException
 	 */
-	public void start() throws SQLiteManagerException, IOException {
+	public void start() throws SQLiteErrorException, IOException {
 		if(this.entitys == null || this.entitys.isEmpty()){
-			throw new SQLiteManagerException("There is no entity or a mapping file, enter one of these information to initialize the database.");
+			throw new SQLiteErrorException("There is no entity or a mapping file, enter one of these information to initialize the database.");
 		}
 		
-		try {
-			File file = getFileSQLite();
+		//try {
+		//	File file = getFileSQLite();
 			if(this.cypher == null){
 				create();
 			}else{
-				this.cypherManager = new CypherFileManager(file, cypher);
-				this.cypherManager.decrypt();
+				//this.cypherManager = new CypherFileManager(file, cypher);
+				//this.cypherManager.decrypt();
 				create();
 			}
-		} catch (SQLiteManagerException e) {
+		//} catch (SQLiteManagerException e) {
 			create();
-			this.cypherManager = new CypherFileManager(getPathSQLiteDefaultApplication(context, databaseName.getDatabase()), cypher);
-			this.cypherManager.encrypt();
-		} catch (IOException e) {
-			throw new SQLiteManagerException("An error occurred while decrypting the file.");
-		}
+			//this.cypherManager = new CypherFileManager(getPathSQLiteDefaultApplication(context, databaseName.getDatabase()), cypher);
+			//this.cypherManager.encrypt();
+	//	} catch (IOException e) {
+	//		throw new SQLiteManagerException("An error occurred while decrypting the file.");
+	//	}
 	}
 	
 	/**
@@ -77,14 +77,21 @@ public class SQLiteCore {
 	 * @return
 	 */
 	public SQLiteDatabase getDatabase(){
-		return connection.getWritableDatabase();
+		if(connection.getDatabase().isOpen()){
+			return connection.getDatabase();
+		}
+		return null;
+	}
+	
+	public SQLiteConnection getConnection() {
+		return connection;
 	}
 
 	/**
 	 * Create database;
-	 * @throws SQLiteManagerException
+	 * @throws SQLiteErrorException
 	 */
-	public void create() throws SQLiteManagerException {
+	public void create() throws SQLiteErrorException {
 		connection = null; 
 		
 		if(entitys != null){
@@ -98,9 +105,9 @@ public class SQLiteCore {
 	/**
 	 * Get path with database folder concat
 	 * @return
-	 * @throws SQLiteManagerException
+	 * @throws SQLiteErrorException
 	 */
-	private File getFileSQLite() throws SQLiteManagerException {
+	private File getFileSQLite() throws SQLiteErrorException {
 		String absolutePath = null;
 		
 		if(pathSQLiteFile == null){
@@ -113,7 +120,7 @@ public class SQLiteCore {
 		if (file.exists()) {
 			return file;
 		}
-		throw new SQLiteManagerException("File SQLite not exist in directory : " + absolutePath);
+		throw new SQLiteErrorException("File SQLite not exist in directory : " + absolutePath);
 	}
 
 	/**
@@ -164,7 +171,7 @@ public class SQLiteCore {
 			return this;
 		}
 		
-		public Builder databases(Class<?> ... entitys) throws SQLiteManagerException{
+		public Builder databases(Class<?> ... entitys) throws SQLiteErrorException{
 			if(this.instance.entitys == null){
 				this.instance.entitys = new LinkedHashMap<String, SQLiteEntity>();
 			}
@@ -175,7 +182,7 @@ public class SQLiteCore {
 			return this;
 		}
 		
-		public Builder database(List<Class<?>> list) throws SQLiteManagerException {
+		public Builder database(List<Class<?>> list) throws SQLiteErrorException {
 			databases((Class<?> [])list.toArray());
 			return this;
 		}
