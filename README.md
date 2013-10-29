@@ -4,12 +4,12 @@ br.com.mirabilis.sqlite
 author: Rodrigo Simões Rosa		
 mail: rodrigosimoesrosa@gmail.com
 
-### Inicialização do banco de dados.				
+### Startup database.				
 
     SQLiteCore core = null;
 	try {
 		core = new SQLiteCore.Builder(this, new
-		SQLiteDatabaseFile.Builder("data").build(),1).databases(User.class).build();
+		SQLiteDatabaseFile.Builder("databasename").build(),1).databases(User.class).build();
 		core.start();
 	} catch (SQLiteException e1) {
 		e1.printStackTrace();
@@ -17,7 +17,7 @@ mail: rodrigosimoesrosa@gmail.com
 		e.printStackTrace();
 	}
 	
-### Class that represent's table in SQLite
+### Class that represents the User in SQLite
 
 	import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationEntity;
 	import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationField;
@@ -49,7 +49,7 @@ mail: rodrigosimoesrosa@gmail.com
 		}
 	}		
 	
-### Class that represent's dao model of User table in SQLite
+### Dao class that implements the model manipulations User in SQLite
 
 	import java.io.IOException;
 	import android.database.Cursor;

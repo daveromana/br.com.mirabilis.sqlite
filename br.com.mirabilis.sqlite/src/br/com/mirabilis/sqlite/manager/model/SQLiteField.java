@@ -13,12 +13,13 @@ public final class SQLiteField {
 	 * @author Rodrigo Simões Rosa
 	 */
 	public enum SQLiteType{
-		NULL("null"),TEXT("text"),INTEGER("integer"),REAL("real"),BLOB("blob");
+		NULL("null"),TEXT("text"),INTEGER("integer"),REAL("real"),BLOB("blob"), DATETIME("datetime");
 		
 		private String type;
 		
 		private SQLiteType(String value) {
 			this.type = value;
+			
 		}
 		
 		@Override

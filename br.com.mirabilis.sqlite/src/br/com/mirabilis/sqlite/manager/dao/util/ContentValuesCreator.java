@@ -1,10 +1,12 @@
 package br.com.mirabilis.sqlite.manager.dao.util;
 
 import java.lang.reflect.Field;
+import java.util.Calendar;
 
 import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationField;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteNotNullFieldException;
+import br.com.mirabilis.sqlite.util.CalendarUtils;
 import android.content.ContentValues;
 
 /**
@@ -35,13 +37,17 @@ public class ContentValuesCreator {
 						case BOOLEAN:
 							contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), (Boolean) value);
 						break;
-	
+						
+						case CALENDAR:
+							contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), CalendarUtils.getString((Calendar) value));
+						break;
+						
 						case BYTE:
 							contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), (Byte) value);
 						break;
 						
 						case BYTE_ARRAY:
-							contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), (byte[]) field.get(data));
+							contentValues.put(field.getAnnotation(SQLiteAnnotationField.class).name(), (byte[]) value);
 						break;
 						
 						case DOUBLE:
