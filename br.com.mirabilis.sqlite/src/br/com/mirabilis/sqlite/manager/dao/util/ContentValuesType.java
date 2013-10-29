@@ -10,7 +10,9 @@ public enum ContentValuesType{
 	
 	public static ContentValuesType getType(Object obj){
 		
-		if(obj instanceof Boolean){
+		if(obj == null){
+			return null;
+		}else if(obj instanceof Boolean){
 			return BOOLEAN;
 		}else if(obj instanceof Byte){
 			return BYTE;

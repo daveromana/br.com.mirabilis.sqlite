@@ -1,6 +1,6 @@
 package br.com.mirabilis.sqlite.manager.model;
 
-import br.com.mirabilis.sqlite.manager.exception.SQLiteErrorException;
+import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
 
 /**
  * Class of field of entity
@@ -111,12 +111,12 @@ public final class SQLiteField {
 	/**
 	 * AutoIncrement, verify if {@link #type} is {@link SQLiteType #INTEGER}
 	 * @param value
-	 * @throws SQLiteErrorException
+	 * @throws SQLiteException
 	 */
-	public void setAutoIncrement(boolean value) throws SQLiteErrorException {
+	public void setAutoIncrement(boolean value) throws SQLiteException {
 		if(value){
 			if (!(this.type.equals(SQLiteType.INTEGER))){
-				throw new SQLiteErrorException("It is not possible to perform an auto increment than the type Integer!");
+				throw new SQLiteException("It is not possible to perform an auto increment than the type Integer!");
 			}else{
 				this.autoIncrement = value;
 			}
@@ -158,7 +158,7 @@ public final class SQLiteField {
 			return this;
 		}
 		
-		public Builder autoIncrement(boolean autoIncrement) throws SQLiteErrorException {
+		public Builder autoIncrement(boolean autoIncrement) throws SQLiteException {
 			this.instance.setAutoIncrement(autoIncrement);
 			return this;
 		}

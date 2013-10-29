@@ -8,7 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import br.com.mirabilis.sqlite.manager.exception.SQLiteErrorException;
+import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
 import br.com.mirabilis.sqlite.manager.model.SQLiteEntity;
 import br.com.mirabilis.sqlite.manager.util.SQLiteDatabaseFile;
 
@@ -55,14 +55,14 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 	}
 
 
-	public void connect() throws SQLException, SQLiteErrorException {
+	public void connect() throws SQLException, SQLiteException {
 		try {
 			this.database = this.getWritableDatabase();
 			if (this.database.isOpen()) {
 				this.database.close();
 			}
 		} catch (Exception e) {
-			throw new SQLiteErrorException("Error with connection SQLite : " + e.getMessage());
+			throw new SQLiteException("Error with connection SQLite : " + e.getMessage());
 		}
 	}
 

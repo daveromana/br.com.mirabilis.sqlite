@@ -1,25 +1,25 @@
 package br.com.mirabilis.sqlite.manager.exception;
 
 /**
- * Exception from {@link SQLiteErrorException}
+ * Exception from {@link SQLiteException}
  * @author Rodrigo Simões Rosa
  */
-public class SQLiteErrorException extends Exception {
+public class SQLiteException extends Exception {
 
 	/**
 	 * Serialization
 	 */
 	private static final long serialVersionUID = -4913326707914327547L;
 	
-	public SQLiteErrorException() {
+	public SQLiteException() {
 		super("SQLiteManagerException exception");
 	}
 	
-	public SQLiteErrorException(Throwable throwable){
+	public SQLiteException(Throwable throwable){
 		super(throwable);
 	}
 	
-	public SQLiteErrorException(String exception){
+	public SQLiteException(String exception){
 		super(exception);
 	}
 }

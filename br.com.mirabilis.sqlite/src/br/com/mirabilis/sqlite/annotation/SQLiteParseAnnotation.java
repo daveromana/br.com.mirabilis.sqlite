@@ -6,7 +6,7 @@ import java.util.List;
 
 import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationEntity;
 import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationField;
-import br.com.mirabilis.sqlite.manager.exception.SQLiteErrorException;
+import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
 import br.com.mirabilis.sqlite.manager.model.SQLiteEntity;
 import br.com.mirabilis.sqlite.manager.model.SQLiteField;
 import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteType;
@@ -20,7 +20,7 @@ import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteType;
 public class SQLiteParseAnnotation {
 
 	public static SQLiteEntity getValuesFromAnnotation(
-			Class<?> classHasAnnotation) throws SQLiteErrorException {
+			Class<?> classHasAnnotation) throws SQLiteException {
 		SQLiteAnnotationEntity entityAnnotation = null;
 		List<SQLiteField> fields = null;
 		if (classHasAnnotation
@@ -59,7 +59,7 @@ public class SQLiteParseAnnotation {
 				}
 			}
 		} else {
-			throw new SQLiteErrorException("The class : ".concat(
+			throw new SQLiteException("The class : ".concat(
 					classHasAnnotation.getName())
 					.concat(" has not annotation!"));
 		}
@@ -73,9 +73,9 @@ public class SQLiteParseAnnotation {
 	 * Return {@link SQLiteField} by {@link SQLiteParseAnnotation}
 	 * @param annotation
 	 * @return
-	 * @throws SQLiteErrorException
+	 * @throws SQLiteException
 	 */
-	public static SQLiteField getSQLiteField(SQLiteAnnotationField annotation) throws SQLiteErrorException{
+	public static SQLiteField getSQLiteField(SQLiteAnnotationField annotation) throws SQLiteException{
 		return new SQLiteField.Builder(annotation.name(),
 				SQLiteType.getValue(annotation.type()))
 				.autoIncrement(annotation.autoIncrement())
