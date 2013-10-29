@@ -26,25 +26,49 @@ mail: rodrigosimoesrosa@gmail.com
 	@SQLiteAnnotationEntity(name="user")
 	public class User extends SQLiteTable {
 	
-	@SQLiteAnnotationField(name="name", type="text")
-	private String name;
+		@SQLiteAnnotationField(name="name", type="text")
+		private String name;
 	
-	@SQLiteAnnotationField(name="value", type="integer")
-	private Integer value;
+		@SQLiteAnnotationField(name="value", type="integer")
+		private Integer value;
 	
-	public void setName(String name) {
-		this.name = name;
+		public void setName(String name) {
+			this.name = name;
+		}
+	
+		public void setValue(Integer value) {
+			this.value = value;
+		}
+	
+		public String getName() {
+			return name;
+		}
+	
+		public Integer getValue() {
+			return value;
+		}
+	}		
+	
+### Class that represent's dao model of User table in SQLite
+
+	import java.io.IOException;
+	import android.database.Cursor;
+	import br.com.mirabilis.sqlite.manager.core.SQLiteCore;
+	import br.com.mirabilis.sqlite.manager.dao.SQLiteDAO;
+	import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
+	
+	public class UserDAO extends SQLiteDAO<User> {
+		
+		public UserDAO(SQLiteCore core) throws SQLiteException, IOException {
+			super(core, User.class);
+		}
+		
+		@Override
+		public User parser(Cursor cursor) {
+			User user = new User();
+			user.setId(cursor.getInt(0));
+			user.setName(cursor.getString(1));
+			user.setValue(cursor.getInt(2));
+			return user;
+		}
 	}
-	
-	public void setValue(Integer value) {
-		this.value = value;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public Integer getValue() {
-		return value;
-	}
-}	
