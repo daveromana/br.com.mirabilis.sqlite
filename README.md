@@ -72,3 +72,20 @@ mail: rodrigosimoesrosa@gmail.com
 			return user;
 		}
 	}
+	
+### Select default in UserDAO
+
+	UserDAO dao = null;
+	List<User> list = null;
+	try {
+		dao = new UserDAO(core);
+		list = dao.select();
+	} catch (SQLiteEmptyException e) {
+		e.printStackTrace();
+	} catch (SQLiteException e) {
+		e.printStackTrace();
+	} catch (IllegalArgumentException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}	
