@@ -71,6 +71,8 @@ mail: rodrigosimoesrosa@gmail.com
 			user.setValue(cursor.getInt(2));
 			return user;
 		}
+		
+		//Make your custom's methods for UserDAO
 	}
 	
 ### Select default in UserDAO
@@ -115,4 +117,59 @@ mail: rodrigosimoesrosa@gmail.com
 	} catch (IOException e) {
 		e.printStackTrace();
 	}
+
+### Persist default in UserDAO
+
+	UserDAO dao = null;
+	User user = new User();
+	try {
+		dao = new UserDAO(core);
+		user.setName("name");
+		user.setValue(1);
+		user = dao.persist(user);
+	} catch (SQLiteException e) {
+		e.printStackTrace();
+	} catch (SQLiteEmptyException e) {
+		e.printStackTrace();
+	} catch (SQLiteNotNullFieldException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	
+### Insert default in UserDAO
+
+	UserDAO dao = null;
+	User user = new User();
+	try {
+		dao = new UserDAO(core);
+		user.setName("name");
+		user.setValue(1);
+		long id = dao.insert(user);
+	} catch (SQLiteException e) {
+		e.printStackTrace();
+	} catch (SQLiteNotNullFieldException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+
+### Delete default in UserDAO
+
+	UserDAO dao = null;
+	User user = new User();
+	try {
+		dao = new UserDAO(core);
+		user.setName("name");
+		user.setValue(1);
+		boolean sucessfully = dao.delete(user);
+	} catch (SQLiteException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}	
+	
+
+
+	
 	
