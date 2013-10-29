@@ -4,7 +4,7 @@ br.com.mirabilis.sqlite
 author: Rodrigo Simões Rosa		
 mail: rodrigosimoesrosa@gmail.com
 
-### Inicialização do banco de dados.		
+### Inicialização do banco de dados.				
 
     SQLiteCore core = null;
 	try {
@@ -16,3 +16,35 @@ mail: rodrigosimoesrosa@gmail.com
 	} catch (IOException e) {
 		e.printStackTrace();
 	}
+	
+### Class that represent's table in SQLite
+
+	import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationEntity;
+	import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationField;
+	import br.com.mirabilis.sqlite.manager.model.SQLiteTable;
+	
+	@SQLiteAnnotationEntity(name="user")
+	public class User extends SQLiteTable {
+	
+	@SQLiteAnnotationField(name="name", type="text")
+	private String name;
+	
+	@SQLiteAnnotationField(name="value", type="integer")
+	private Integer value;
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setValue(Integer value) {
+		this.value = value;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public Integer getValue() {
+		return value;
+	}
+}	
