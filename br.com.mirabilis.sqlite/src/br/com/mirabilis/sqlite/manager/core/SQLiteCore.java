@@ -116,7 +116,7 @@ public class SQLiteCore {
 	 * 
 	 * @throws IOException
 	 */
-	public void crypte() throws IOException {
+	public void crypt() throws IOException {
 		crypt(this.file);
 	}
 
