@@ -22,24 +22,26 @@ import br.com.mirabilis.sqlite.manager.model.SQLiteTable;
 
 /**
  * Class abstract of DAO.
+ * 
  * @author Rodrigo Simões Rosa
  * @param <T>
- * Object.
+ *            Object.
  */
 public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 
 	protected SQLiteDatabase database;
 	protected Class<T> classHasAnnotation;
 	protected Context context;
-	
+
 	/**
 	 * Constructor;
 	 * 
 	 * @param database
-	 * @throws IOException 
-	 * @throws SQLiteException 
+	 * @throws IOException
+	 * @throws SQLiteException
 	 */
-	public SQLiteDAO(SQLiteCore core, Class<T> classHasAnnotation) throws SQLiteException, IOException {
+	public SQLiteDAO(SQLiteCore core, Class<T> classHasAnnotation)
+			throws SQLiteException, IOException {
 		core.start();
 		this.database = core.getConnection().getWritableDatabase();
 		this.classHasAnnotation = classHasAnnotation;
@@ -77,8 +79,7 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 		try {
 			this.database = sqliteOpenHelper.getWritableDatabase();
 		} catch (Throwable e) {
-			throw new SQLiteException("Error " + e.getMessage()
-					+ " on execute");
+			throw new SQLiteException("Error " + e.getMessage() + " on execute");
 		} finally {
 			return this.open();
 		}
@@ -104,11 +105,13 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 	}
 
 	@Override
-	public final long insert(T data) throws SQLiteException, SQLiteNotNullFieldException {
+	public final long insert(T data) throws SQLiteException,
+			SQLiteNotNullFieldException {
 		long row = 0;
-		
+
 		try {
-			row = database.insert(getTable(), null, getContentValuesByData(data));
+			row = database.insert(getTable(), null,
+					getContentValuesByData(data));
 		} catch (IllegalArgumentException e) {
 			throw new SQLiteException("Error " + e.getMessage());
 		} catch (IllegalAccessException e) {
@@ -116,15 +119,17 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 		}
 		return row;
 	}
-	
+
 	@Override
-	public final boolean add(T data) throws SQLiteException, SQLiteNotNullFieldException{
+	public final boolean add(T data) throws SQLiteException,
+			SQLiteNotNullFieldException {
 		long row = insert(data);
 		return row != -1;
 	}
-	
+
 	@Override
-	public final T persist(T data) throws SQLiteException, SQLiteEmptyException, SQLiteNotNullFieldException {
+	public final T persist(T data) throws SQLiteException,
+			SQLiteEmptyException, SQLiteNotNullFieldException {
 		long row = insert(data);
 		if (row != -1) {
 			return selectByID(row);
@@ -133,12 +138,15 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 	}
 
 	@Override
-	public final boolean update(T data) throws SQLiteException, SQLiteNotNullFieldException {
+	public final boolean update(T data) throws SQLiteException,
+			SQLiteNotNullFieldException {
 		ContentValues values = null;
-		long row = 0; 
-		try{
+		long row = 0;
+		try {
 			values = getContentValuesByData(data);
-			row = database.update(getTable(), values, SQLiteField.Field.ID.toString().concat("=?"), new String[] { String.valueOf(data.getId()) });	
+			row = database.update(getTable(), values, SQLiteField.Field.ID
+					.toString().concat("=?"), new String[] { String
+					.valueOf(data.getId()) });
 		} catch (IllegalArgumentException e) {
 			throw new SQLiteException("Error " + e.getMessage());
 		} catch (IllegalAccessException e) {
@@ -146,101 +154,119 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 		}
 		return row != 0;
 	}
-	
+
 	@Override
 	public final boolean delete(T data) throws SQLiteException {
 		long row = 0;
-		try{
-			row = database.delete(getTable(), SQLiteField.Field.ID.toString().concat("=?"), new String[] { String.valueOf(data.getId()) });	
-		}catch(Throwable a){
+		try {
+			row = database.delete(getTable(), SQLiteField.Field.ID.toString()
+					.concat("=?"),
+					new String[] { String.valueOf(data.getId()) });
+		} catch (Throwable a) {
 			throw new SQLiteException("Error " + a.getMessage());
 		}
 		return row != 0;
 	}
-	
+
 	@Override
-	public final List<T> select(int limit) throws SQLiteException, SQLiteEmptyException {
+	public final List<T> select(int limit) throws SQLiteException,
+			SQLiteEmptyException {
 		List<T> list = new ArrayList<T>();
 		Cursor cursor = null;
-		try{
-			if(limit == 0){
-				cursor = database.query(getTable(), getColumns(), null, null, null, null, null);
-			}else{
-				cursor = database.query(getTable(), getColumns(), null, null, null, null, null, String.valueOf(limit));
+		try {
+			if (limit == 0) {
+				cursor = database.query(getTable(), getColumns(), null, null,
+						null, null, null);
+			} else {
+				cursor = database.query(getTable(), getColumns(), null, null,
+						null, null, null, String.valueOf(limit));
 			}
-			cursor.moveToFirst();
-		    while (!cursor.isAfterLast()) {
-		    	T t = parser(cursor);
-		    	list.add(t);
-		    	cursor.moveToNext();
-		    }
-		}catch(Throwable a){
-			throw new SQLiteException("Error " + a.getMessage());
-		}finally{
-			if(cursor != null){
-				cursor.close();	
-			}
-		}
-		
-		if(list.isEmpty()){
-			throw new SQLiteEmptyException();
-		}
-		
-		return list;
-	}
-	
-	@Override
-	public final T selectByID(long id) throws SQLiteException, SQLiteEmptyException {
-		Cursor cursor = null;
-		T data = null;
-		try{
-			cursor = database.query(getTable(), getColumns(), SQLiteField.Field.ID.toString().concat("=?") , new String[] { String.valueOf(id) }, null, null, null);
-			if(cursor.moveToFirst() == false){
-				return null;
-			}
-			data = parser(cursor);
-		}catch(Throwable a){
-			throw new SQLiteException("Error " + a.getMessage());
-		}finally{
-			if(cursor != null){
-				cursor.close();	
-			}
-		}
-		
-		if(data == null){
-			throw new SQLiteEmptyException();
-		}
-		return data; 
-	}
-	
-	@Override
-	public final List<T> selectByPage(int limit, int page) throws SQLiteException, SQLiteEmptyException {
-		List<T> list = new ArrayList<T>();
-		Cursor cursor = null;
-		int offset  = 0;
-		try{
-						
-			offset = (limit * (page - 1));	
-			
-			cursor = database.query(getTable(), getColumns(), null, null, null, null, null, String.valueOf(offset).concat(", ").concat(String.valueOf(limit)));
 			cursor.moveToFirst();
 			while (!cursor.isAfterLast()) {
 				T t = parser(cursor);
 				list.add(t);
 				cursor.moveToNext();
 			}
-		}catch(Throwable a){
+		} catch (Throwable a) {
 			throw new SQLiteException("Error " + a.getMessage());
-		}finally{
-			if(cursor != null){
-				cursor.close();	
+		} finally {
+			if (cursor != null) {
+				cursor.close();
 			}
 		}
-		
-		if(list.isEmpty()){
+
+		if (list.isEmpty()) {
 			throw new SQLiteEmptyException();
 		}
-		
+
+		return list;
+	}
+
+	@Override
+	public final T selectByID(long id) throws SQLiteException,
+			SQLiteEmptyException {
+		Cursor cursor = null;
+		T data = null;
+		try {
+			cursor = database.query(getTable(), getColumns(),
+					SQLiteField.Field.ID.toString().concat("=?"),
+					new String[] { String.valueOf(id) }, null, null, null);
+			if (cursor.moveToFirst() == false) {
+				return null;
+			}
+			data = parser(cursor);
+		} catch (Throwable a) {
+			throw new SQLiteException("Error " + a.getMessage());
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+
+		if (data == null) {
+			throw new SQLiteEmptyException();
+		}
+		return data;
+	}
+
+	@Override
+	public final List<T> selectByPage(int limit, int page)
+			throws SQLiteException, SQLiteEmptyException {
+		List<T> list = new ArrayList<T>();
+		Cursor cursor = null;
+		int offset = 0;
+		try {
+
+			offset = (limit * (page - 1));
+
+			cursor = database.query(
+					getTable(),
+					getColumns(),
+					null,
+					null,
+					null,
+					null,
+					null,
+					String.valueOf(offset).concat(", ")
+							.concat(String.valueOf(limit)));
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast()) {
+				T t = parser(cursor);
+				list.add(t);
+				cursor.moveToNext();
+			}
+		} catch (Throwable a) {
+			throw new SQLiteException("Error " + a.getMessage());
+		} finally {
+			if (cursor != null) {
+				cursor.close();
+			}
+		}
+
+		if (list.isEmpty()) {
+			throw new SQLiteEmptyException();
+		}
+
 		return list;
 	}
 
@@ -251,73 +277,92 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 
 	/**
 	 * Return table name
+	 * 
 	 * @return
-	 * @throws SQLiteException 
+	 * @throws SQLiteException
 	 */
-	private String getTable() throws SQLiteException{
-		if(classHasAnnotation.isAnnotationPresent(SQLiteAnnotationEntity.class)){
-			SQLiteAnnotationEntity annotation = classHasAnnotation.getAnnotation(SQLiteAnnotationEntity.class);
+	private String getTable() throws SQLiteException {
+		if (classHasAnnotation
+				.isAnnotationPresent(SQLiteAnnotationEntity.class)) {
+			SQLiteAnnotationEntity annotation = classHasAnnotation
+					.getAnnotation(SQLiteAnnotationEntity.class);
 			return annotation.name();
 		}
-		throw new SQLiteException(" Class ".concat(classHasAnnotation.getName()).concat(" isn't valid SQLiteAnnotationEntity"));
+		throw new SQLiteException(" Class "
+				.concat(classHasAnnotation.getName()).concat(
+						" isn't valid SQLiteAnnotationEntity"));
 	}
-	
+
 	/**
 	 * Return columns names.
+	 * 
 	 * @return
-	 * @throws SQLiteException 
+	 * @throws SQLiteException
 	 */
-	private String [] getColumns() throws SQLiteException{
+	private String[] getColumns() throws SQLiteException {
 		List<String> columns = new ArrayList<String>();
-		if(classHasAnnotation.isAnnotationPresent(SQLiteAnnotationEntity.class)){
-			
+		if (classHasAnnotation
+				.isAnnotationPresent(SQLiteAnnotationEntity.class)) {
+
 			/**
 			 * Recovery superclass field.
 			 */
-			for(Field field : classHasAnnotation.getSuperclass().getDeclaredFields()){
-				if(field.isAnnotationPresent(SQLiteAnnotationField.class)){
-					columns.add(field.getAnnotation(SQLiteAnnotationField.class).name());	
+			for (Field field : classHasAnnotation.getSuperclass()
+					.getDeclaredFields()) {
+				if (field.isAnnotationPresent(SQLiteAnnotationField.class)) {
+					columns.add(field
+							.getAnnotation(SQLiteAnnotationField.class).name());
 				}
 			}
-			
+
 			/**
 			 * Recovery fields.
 			 */
-			for(Field field : classHasAnnotation.getDeclaredFields()){
-				if(field.isAnnotationPresent(SQLiteAnnotationField.class)){
-					columns.add(field.getAnnotation(SQLiteAnnotationField.class).name());	
+			for (Field field : classHasAnnotation.getDeclaredFields()) {
+				if (field.isAnnotationPresent(SQLiteAnnotationField.class)) {
+					columns.add(field
+							.getAnnotation(SQLiteAnnotationField.class).name());
 				}
 			}
-			
-			if(columns.isEmpty()){
-				throw new SQLiteException(" Not finded fields in class ".concat(classHasAnnotation.getName()).concat(" valid as SQLiteAnnotationField"));
+
+			if (columns.isEmpty()) {
+				throw new SQLiteException(" Not finded fields in class "
+						.concat(classHasAnnotation.getName()).concat(
+								" valid as SQLiteAnnotationField"));
 			}
-			
-			String [] temp = new String[columns.size()];
+
+			String[] temp = new String[columns.size()];
 			columns.toArray(temp);
 			return temp;
-		}else{
-			throw new SQLiteException(" Class ".concat(classHasAnnotation.getName()).concat(" isn't valid SQLiteAnnotationEntity"));
+		} else {
+			throw new SQLiteException(" Class ".concat(
+					classHasAnnotation.getName()).concat(
+					" isn't valid SQLiteAnnotationEntity"));
 		}
 	}
-	
+
 	/**
 	 * Return object parsed;
-	 * @param cursor don't forget call cursor.close(), before do parser;
+	 * 
+	 * @param cursor
+	 *            don't forget call cursor.close(), before do parser;
 	 * @return
 	 */
 	public abstract T parser(Cursor cursor);
 
 	/**
 	 * Return contentValues by Data.
+	 * 
 	 * @param data
 	 * @return
-	 * @throws IllegalAccessException 
-	 * @throws IllegalArgumentException 
-	 * @throws SQLiteNotNullFieldException 
-	 * @throws SQLiteException 
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws SQLiteNotNullFieldException
+	 * @throws SQLiteException
 	 */
-	public ContentValues getContentValuesByData(T data) throws IllegalArgumentException, IllegalAccessException, SQLiteNotNullFieldException, SQLiteException {
+	public ContentValues getContentValuesByData(T data)
+			throws IllegalArgumentException, IllegalAccessException,
+			SQLiteNotNullFieldException, SQLiteException {
 		return ContentValuesCreator.creator(data);
 	}
 }

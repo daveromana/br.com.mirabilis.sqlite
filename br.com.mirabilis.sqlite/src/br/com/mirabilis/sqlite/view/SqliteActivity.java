@@ -6,6 +6,7 @@ import br.com.mirabilis.sqlite.R;
 
 /**
  * {@link Activity} of library
+ * 
  * @author Rodrigo Simões Rosa
  */
 public class SqliteActivity extends Activity {

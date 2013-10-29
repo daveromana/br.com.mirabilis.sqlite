@@ -6,6 +6,7 @@ import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
 
 /**
  * Class of {@link SQLiteEntity}
+ * 
  * @author Rodrigo Simões Rosa
  */
 public final class SQLiteEntity {
@@ -39,9 +40,10 @@ public final class SQLiteEntity {
 	 * 
 	 * @param name
 	 * @param fields
-	 * @throws SQLiteException 
+	 * @throws SQLiteException
 	 */
-	public SQLiteEntity(String name, List<SQLiteField> fields) throws SQLiteException {
+	public SQLiteEntity(String name, List<SQLiteField> fields)
+			throws SQLiteException {
 		this.name = name;
 		this.fields = fields;
 	}
@@ -63,9 +65,9 @@ public final class SQLiteEntity {
 		query.append("create table if not exists ");
 		query.append(getNameEntity().concat("("));
 		StringBuilder fieldQuery = new StringBuilder();
-		for(int i = 0; i < fields.size(); i++){
+		for (int i = 0; i < fields.size(); i++) {
 			SQLiteField f = fields.get(i);
-			
+
 			fieldQuery.append(f.getName());
 			fieldQuery.append(" " + f.getType());
 
@@ -80,8 +82,8 @@ public final class SQLiteEntity {
 			if (f.isNotNull()) {
 				fieldQuery.append(" " + Normalization.NOT_NULL.toString());
 			}
-			
-			if(i <  fields.size() - 1){
+
+			if (i < fields.size() - 1) {
 				fieldQuery.append(",");
 			}
 		}

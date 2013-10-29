@@ -2,6 +2,7 @@ package br.com.mirabilis.sqlite.manager.exception;
 
 /**
  * Exception of control result of query when that is empty.
+ * 
  * @author Rodrigo Simões Rosa.
  */
 public class SQLiteEmptyException extends Exception {
@@ -14,12 +15,12 @@ public class SQLiteEmptyException extends Exception {
 	public SQLiteEmptyException(String msg) {
 		super(msg);
 	}
-	
+
 	public SQLiteEmptyException() {
 		this("The result of query in sqlite is empty");
 	}
-	
-	public SQLiteEmptyException(Throwable throwable){
+
+	public SQLiteEmptyException(Throwable throwable) {
 		super(throwable);
 	}
 }

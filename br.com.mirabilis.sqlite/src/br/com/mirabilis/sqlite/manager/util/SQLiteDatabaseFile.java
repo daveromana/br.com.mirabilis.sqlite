@@ -6,6 +6,7 @@ import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
 
 /**
  * Validate name of database;
+ * 
  * @author Rodrigo Simões Rosa
  */
 public class SQLiteDatabaseFile {
@@ -14,7 +15,8 @@ public class SQLiteDatabaseFile {
 	private String path;
 
 	/**
-	 * Receipt {@link String} that of name from database; 
+	 * Receipt {@link String} that of name from database;
+	 * 
 	 * @param databaseName
 	 * @throws SQLConnectionException
 	 */
@@ -28,14 +30,16 @@ public class SQLiteDatabaseFile {
 
 	/**
 	 * Return databaseName;
+	 * 
 	 * @return
 	 */
 	public String getDatabase() {
 		return database;
 	}
-	
+
 	/**
 	 * Return path;
+	 * 
 	 * @return
 	 */
 	public String getPath() {
@@ -44,33 +48,52 @@ public class SQLiteDatabaseFile {
 
 	/**
 	 * Return absolutePath
+	 * 
 	 * @return
 	 */
 	public String getAbsolutePath() {
-		if(path != null){
-			return path.concat(database);	
+		if (path != null) {
+			return path.concat(database);
 		}
 		return database;
 	}
-	
+
 	/**
 	 * Builder of {@link SQLiteDatabaseFile}
+	 * 
 	 * @author Rodrigo Simões Rosa.
 	 */
 	public static class Builder {
-		
+
 		private SQLiteDatabaseFile instance;
-		
+
+		/**
+		 * Constructor
+		 * 
+		 * @param databaseName
+		 * @throws SQLiteException
+		 */
 		public Builder(String databaseName) throws SQLiteException {
 			this.instance = new SQLiteDatabaseFile(databaseName);
 		}
-		
-		public Builder path(String path){
+
+		/**
+		 * Set path of file
+		 * 
+		 * @param path
+		 * @return
+		 */
+		public Builder path(String path) {
 			this.instance.path = path;
 			return this;
 		}
-		
-		public SQLiteDatabaseFile build(){
+
+		/**
+		 * Build {@link SQLiteDatabaseFile}
+		 * 
+		 * @return
+		 */
+		public SQLiteDatabaseFile build() {
 			return this.instance;
 		}
 	}

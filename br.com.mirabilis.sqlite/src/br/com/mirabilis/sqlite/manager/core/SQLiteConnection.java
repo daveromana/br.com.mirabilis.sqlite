@@ -13,7 +13,8 @@ import br.com.mirabilis.sqlite.manager.model.SQLiteEntity;
 import br.com.mirabilis.sqlite.manager.util.SQLiteDatabaseFile;
 
 /**
- * Class of creation database; 
+ * Class of creation database;
+ * 
  * @author Rodrigo Simões Rosa
  */
 public class SQLiteConnection extends SQLiteOpenHelper {
@@ -23,7 +24,15 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 	private SQLiteDatabase database;
 	public Context context;
 
-	public SQLiteConnection(Context context, SQLiteDatabaseFile database, int version) {
+	/**
+	 * Construtor
+	 * 
+	 * @param context
+	 * @param database
+	 * @param version
+	 */
+	public SQLiteConnection(Context context, SQLiteDatabaseFile database,
+			int version) {
 		super(context, database.getDatabase(), null, version);
 		this.database = getWritableDatabase();
 	}
@@ -31,8 +40,8 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase database) {
 		this.database = database;
-		if(entitys != null){
-			createTables();	
+		if (entitys != null) {
+			createTables();
 		}
 	}
 
@@ -46,6 +55,9 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 		}
 	}
 
+	/**
+	 * Create tables
+	 */
 	public void createTables() {
 		for (Map.Entry<String, SQLiteEntity> e : entitys.entrySet()) {
 			String query = e.getValue().getQueryCreateEntity();
@@ -54,7 +66,12 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 		}
 	}
 
-
+	/**
+	 * Do connection with database
+	 * 
+	 * @throws SQLException
+	 * @throws SQLiteException
+	 */
 	public void connect() throws SQLException, SQLiteException {
 		try {
 			this.database = this.getWritableDatabase();
@@ -62,40 +79,71 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 				this.database.close();
 			}
 		} catch (Exception e) {
-			throw new SQLiteException("Error with connection SQLite : " + e.getMessage());
+			throw new SQLiteException("Error with connection SQLite : "
+					+ e.getMessage());
 		}
 	}
 
 	/**
+	 * Get {@link SQLiteDatabase}
+	 * 
+	 * @return
+	 */
+	public SQLiteDatabase getDatabase() {
+		return this.database;
+	}
+
+	/**
 	 * Builder {@link SQLiteConnection}
+	 * 
 	 * @author Rodrigo Simões Rosa
 	 */
 	public static class Builder {
 
 		private SQLiteConnection instance;
 
+		/**
+		 * Constructor
+		 * 
+		 * @param context
+		 * @param database
+		 * @param version
+		 */
 		public Builder(Context context, SQLiteDatabaseFile database, int version) {
 			this.instance = new SQLiteConnection(context, database, version);
 		}
 
+		/**
+		 * Set entitys
+		 * 
+		 * @param entitys
+		 * @return
+		 */
 		public Builder entitys(LinkedHashMap<String, SQLiteEntity> entitys) {
 			this.instance.entitys = entitys;
 			this.instance.createTables();
 			return this;
 		}
 
+		/**
+		 * Set entity
+		 * 
+		 * @param entity
+		 * @return
+		 */
 		public Builder entity(SQLiteEntity entity) {
 			this.instance.entitys.put(entity.getNameEntity(), entity);
 			return this;
 		}
 
+		/**
+		 * Build {@link SQLiteConnection}
+		 * 
+		 * @return
+		 */
 		public SQLiteConnection build() {
 			return instance;
 		}
-	}
-
-	public SQLiteDatabase getDatabase() {
-		return this.database;
 	}
 
 }

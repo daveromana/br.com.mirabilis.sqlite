@@ -27,11 +27,12 @@ public class SQLiteParseAnnotation {
 				.isAnnotationPresent(SQLiteAnnotationEntity.class)) {
 			entityAnnotation = classHasAnnotation
 					.getAnnotation(SQLiteAnnotationEntity.class);
-			
+
 			/**
 			 * Get fields of superclass SQLiteTable
 			 */
-			for(Field field: classHasAnnotation.getSuperclass().getDeclaredFields()){
+			for (Field field : classHasAnnotation.getSuperclass()
+					.getDeclaredFields()) {
 				if (field.isAnnotationPresent(SQLiteAnnotationField.class)) {
 
 					/**
@@ -40,11 +41,12 @@ public class SQLiteParseAnnotation {
 					if (fields == null) {
 						fields = new ArrayList<SQLiteField>();
 					}
-					
-					fields.add(getSQLiteField(field.getAnnotation(SQLiteAnnotationField.class)));
+
+					fields.add(getSQLiteField(field
+							.getAnnotation(SQLiteAnnotationField.class)));
 				}
 			}
-			
+
 			for (Field field : classHasAnnotation.getDeclaredFields()) {
 				if (field.isAnnotationPresent(SQLiteAnnotationField.class)) {
 
@@ -55,7 +57,8 @@ public class SQLiteParseAnnotation {
 						fields = new ArrayList<SQLiteField>();
 					}
 
-					fields.add(getSQLiteField(field.getAnnotation(SQLiteAnnotationField.class)));
+					fields.add(getSQLiteField(field
+							.getAnnotation(SQLiteAnnotationField.class)));
 				}
 			}
 		} else {
@@ -68,14 +71,16 @@ public class SQLiteParseAnnotation {
 
 		return entity;
 	}
-	
+
 	/**
 	 * Return {@link SQLiteField} by {@link SQLiteParseAnnotation}
+	 * 
 	 * @param annotation
 	 * @return
 	 * @throws SQLiteException
 	 */
-	public static SQLiteField getSQLiteField(SQLiteAnnotationField annotation) throws SQLiteException{
+	public static SQLiteField getSQLiteField(SQLiteAnnotationField annotation)
+			throws SQLiteException {
 		return new SQLiteField.Builder(annotation.name(),
 				SQLiteType.getValue(annotation.type()))
 				.autoIncrement(annotation.autoIncrement())

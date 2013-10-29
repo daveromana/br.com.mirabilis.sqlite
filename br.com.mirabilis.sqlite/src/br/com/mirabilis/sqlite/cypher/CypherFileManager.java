@@ -8,16 +8,41 @@ import java.io.IOException;
 
 import android.util.Base64;
 
+/**
+ * Class that crypt and decrypt file.
+ * 
+ * @author Rodrigo Simões Rosa.
+ */
 public class CypherFileManager {
 
 	private File file;
 	private CypherType cypherType;
-	
+
+	/**
+	 * {@link CypherType} Type of cypher
+	 * 
+	 * @author Rodrigo Simões Rosa
+	 */
+	public enum CypherType {
+		BASE64;
+	}
+
+	/**
+	 * Constructor
+	 * 
+	 * @param file
+	 * @param cypherType
+	 */
 	public CypherFileManager(File file, CypherType cypherType) {
 		this.file = file;
 		this.cypherType = cypherType;
 	}
 
+	/**
+	 * Decrypt
+	 * 
+	 * @throws IOException
+	 */
 	public void decrypt() throws IOException {
 		BufferedReader reader = null;
 		FileWriter fileWriter = null;
@@ -29,11 +54,12 @@ public class CypherFileManager {
 		}
 
 		byte[] contentDecrypted = null;
-		
+
 		switch (cypherType) {
-			case BASE64:
-				contentDecrypted = Base64.decode(content.toString().getBytes(),Base64.DEFAULT);
-				break;
+		case BASE64:
+			contentDecrypted = Base64.decode(content.toString().getBytes(),
+					Base64.DEFAULT);
+			break;
 		}
 
 		File temp = new File(file.getAbsolutePath() + "_temp");
@@ -57,6 +83,11 @@ public class CypherFileManager {
 		reader.close();
 	}
 
+	/**
+	 * Encrypt
+	 * 
+	 * @throws IOException
+	 */
 	public void encrypt() throws IOException {
 		BufferedReader reader = null;
 		FileWriter fileWriter = null;
@@ -69,13 +100,14 @@ public class CypherFileManager {
 		}
 
 		byte[] contentDecrypted = null;
-		
+
 		switch (cypherType) {
-			case BASE64:
-				contentDecrypted = Base64.encode(content.toString().getBytes(), Base64.DEFAULT);
-				break;
+		case BASE64:
+			contentDecrypted = Base64.encode(content.toString().getBytes(),
+					Base64.DEFAULT);
+			break;
 		}
-		
+
 		File temp = new File(file.getAbsolutePath() + "_temp");
 
 		if (!temp.exists()) {
@@ -96,4 +128,29 @@ public class CypherFileManager {
 
 		reader.close();
 	}
+
+	/**
+	 * Encrypt
+	 * 
+	 * @param file
+	 * @param cypherType
+	 * @throws IOException
+	 */
+	public static void encrypt(File file, CypherType cypherType)
+			throws IOException {
+		new CypherFileManager(file, cypherType).encrypt();
+	}
+
+	/**
+	 * Decrypt
+	 * 
+	 * @param file
+	 * @param cypherType
+	 * @throws IOException
+	 */
+	public static void decrypt(File file, CypherType cypherType)
+			throws IOException {
+		new CypherFileManager(file, cypherType).decrypt();
+	}
+
 }

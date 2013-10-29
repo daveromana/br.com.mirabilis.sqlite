@@ -9,36 +9,39 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import br.com.mirabilis.sqlite.annotation.SQLiteParseAnnotation;
 import br.com.mirabilis.sqlite.cypher.CypherFileManager;
-import br.com.mirabilis.sqlite.cypher.CypherType;
+import br.com.mirabilis.sqlite.cypher.CypherFileManager.CypherType;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
 import br.com.mirabilis.sqlite.manager.model.SQLiteEntity;
 import br.com.mirabilis.sqlite.manager.util.SQLiteDatabaseFile;
 
 /**
  * {@link SQLiteCore} Class of core from br.com.mirabilis.sqlite.
+ * 
  * @author Rodrigo Simões Rosa
  */
 public class SQLiteCore {
-	
+
 	private int version;
 	private String pathSQLiteFile;
-	
+
 	private Context context;
 	private LinkedHashMap<String, SQLiteEntity> entitys;
-	
+
 	private CypherType cypher;
 	private CypherFileManager cypherManager;
 	private SQLiteDatabaseFile databaseFile;
 	private SQLiteConnection connection;
 	private File file;
-	
+
 	/**
 	 * Constructor default
+	 * 
 	 * @param context
 	 * @param databaseName
 	 * @param version
 	 */
-	private SQLiteCore(Context context, SQLiteDatabaseFile databaseName, int version) {
+	private SQLiteCore(Context context, SQLiteDatabaseFile databaseName,
+			int version) {
 		this.context = context;
 		this.databaseFile = databaseName;
 		this.version = version;
@@ -46,65 +49,92 @@ public class SQLiteCore {
 
 	/**
 	 * Initialize database;
+	 * 
 	 * @throws IOException
 	 * @throws SQLiteException
 	 */
 	public void start() throws SQLiteException, IOException {
-		if(this.entitys == null || this.entitys.isEmpty()){
-			throw new SQLiteException("There is no entity or a mapping file, enter one of these information to initialize the database.");
+		if (this.entitys == null || this.entitys.isEmpty()) {
+			throw new SQLiteException(
+					"There is no entity or a mapping file, enter one of these information to initialize the database.");
 		}
-		
+
 		try {
 			this.file = getFileSQLite(context, databaseFile, pathSQLiteFile);
-			if(this.cypher == null){
+			if (this.cypher == null) {
 				connect();
-			}else{
+			} else {
 				decrypt(this.file);
 				connect();
 			}
 		} catch (SQLiteException e) {
 			connect();
-			this.file = getPathSQLiteDefaultApplication(context, databaseFile.getDatabase());
+			this.file = getPathSQLiteDefaultApplication(context,
+					databaseFile.getDatabase());
 			crypt(this.file);
 		} catch (IOException e) {
-			throw new SQLiteException("An error occurred while decrypting the file.");
+			throw new SQLiteException(
+					"An error occurred while decrypting the file.");
 		}
 	}
-	
+
 	/**
 	 * Decrypt file of sqlite.
+	 * 
 	 * @param file
 	 * @throws IOException
 	 */
-	public void decrypt(File file) throws IOException{
+	public void decrypt(File file) throws IOException {
 		this.cypherManager = new CypherFileManager(file, cypher);
 		this.cypherManager.decrypt();
 	}
-	
+
 	/**
-	 * Crypt file of sqlite.
+	 * Decrypt file of sqlite.
+	 * 
+	 * @param file
 	 * @throws IOException
 	 */
-	public void crypt(File file) throws IOException{
-		if(this.cypher != null){
+	public void decrypt() throws IOException {
+		decrypt(file);
+	}
+
+	/**
+	 * Crypt file of sqlite.
+	 * 
+	 * @throws IOException
+	 */
+	public void crypt(File file) throws IOException {
+		if (this.cypher != null) {
 			this.cypherManager = new CypherFileManager(file, cypher);
 			this.cypherManager.encrypt();
 		}
 	}
-	
+
+	/**
+	 * Crypt file of sqlite.
+	 * 
+	 * @throws IOException
+	 */
+	public void crypte() throws IOException {
+		crypt(this.file);
+	}
+
 	/**
 	 * Return {@link SQLiteDatabase}
+	 * 
 	 * @return
 	 */
-	public SQLiteDatabase getDatabase(){
-		if(this.connection.getDatabase().isOpen()){
+	public SQLiteDatabase getDatabase() {
+		if (this.connection.getDatabase().isOpen()) {
 			return this.connection.getDatabase();
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Return {@link String} of pathSQLiteFile
+	 * 
 	 * @return
 	 */
 	public String getPathSQLiteFile() {
@@ -113,22 +143,25 @@ public class SQLiteCore {
 
 	/**
 	 * Return {@link SQLiteDatabaseFile}
+	 * 
 	 * @return
 	 */
 	public SQLiteDatabaseFile getDatabaseFile() {
 		return this.databaseFile;
 	}
-	
+
 	/**
 	 * Return {@link Context}
+	 * 
 	 * @return
 	 */
 	public Context getContext() {
 		return this.context;
 	}
-	
+
 	/**
 	 * Get {@link SQLiteConnection}
+	 * 
 	 * @return
 	 */
 	public SQLiteConnection getConnection() {
@@ -137,21 +170,25 @@ public class SQLiteCore {
 
 	/**
 	 * Create database;
+	 * 
 	 * @throws SQLiteException
 	 */
 	public void connect() throws SQLiteException {
-		connection = null; 
-		
-		if(entitys != null){
-			connection = new SQLiteConnection.Builder(context, databaseFile, version).entitys(entitys).build();
-		}else{
-			connection = new SQLiteConnection.Builder(context, databaseFile, version).build();
+		connection = null;
+
+		if (entitys != null) {
+			connection = new SQLiteConnection.Builder(context, databaseFile,
+					version).entitys(entitys).build();
+		} else {
+			connection = new SQLiteConnection.Builder(context, databaseFile,
+					version).build();
 		}
 		connection.connect();
 	}
-	
+
 	/**
 	 * Get {@link CypherType}
+	 * 
 	 * @return
 	 */
 	public CypherType getCypher() {
@@ -160,37 +197,45 @@ public class SQLiteCore {
 
 	/**
 	 * Get path with database folder concat
+	 * 
 	 * @return
 	 * @throws SQLiteException
 	 */
-	public static File getFileSQLite(Context context, SQLiteDatabaseFile dbFile, String path) throws SQLiteException {
+	public static File getFileSQLite(Context context,
+			SQLiteDatabaseFile dbFile, String path) throws SQLiteException {
 		String absolutePath = null;
-		
-		if(path == null){
-			absolutePath = getPathSQLiteDefaultApplication(context, dbFile.getDatabase()).getAbsolutePath();
-		}else{
+
+		if (path == null) {
+			absolutePath = getPathSQLiteDefaultApplication(context,
+					dbFile.getDatabase()).getAbsolutePath();
+		} else {
 			absolutePath = path;
 		}
-		
+
 		File file = new File(absolutePath);
 		if (file.exists()) {
 			return file;
 		}
-		throw new SQLiteException("File SQLite not exist in directory : " + absolutePath);
+		throw new SQLiteException("File SQLite not exist in directory : "
+				+ absolutePath);
 	}
 
 	/**
 	 * Recovery path of file .db for application.
+	 * 
 	 * @param context
-	 * @param databaseName DATABASENAME + ".db"
+	 * @param databaseName
+	 *            DATABASENAME + ".db"
 	 * @return File of database
 	 */
-	public static File getPathSQLiteDefaultApplication(Context context, String databaseName){
+	public static File getPathSQLiteDefaultApplication(Context context,
+			String databaseName) {
 		return context.getDatabasePath(databaseName);
 	}
-	
+
 	/**
 	 * Retorn o path depend of Version SDK.
+	 * 
 	 * @param context
 	 * @param sdk
 	 * @return
@@ -204,46 +249,49 @@ public class SQLiteCore {
 		}
 		return path.toString();
 	}
-	
+
 	/**
 	 * Builder of {@link SQLiteCore}
+	 * 
 	 * @author Rodrigo Simões Rosa.
 	 */
 	public static class Builder {
-		
+
 		private SQLiteCore instance;
-		
-		public Builder(Context context, SQLiteDatabaseFile databaseName, int version) {
+
+		public Builder(Context context, SQLiteDatabaseFile databaseName,
+				int version) {
 			this.instance = new SQLiteCore(context, databaseName, version);
 		}
-		
-		public Builder pathSQLiteFile(String path){
+
+		public Builder pathSQLiteFile(String path) {
 			this.instance.pathSQLiteFile = path;
 			return this;
 		}
-		
-		public Builder cypher(CypherType type){
+
+		public Builder cypher(CypherType type) {
 			this.instance.cypher = type;
 			return this;
 		}
-		
-		public Builder databases(Class<?> ... entitys) throws SQLiteException{
-			if(this.instance.entitys == null){
+
+		public Builder databases(Class<?>... entitys) throws SQLiteException {
+			if (this.instance.entitys == null) {
 				this.instance.entitys = new LinkedHashMap<String, SQLiteEntity>();
 			}
-			for(Class<?> classHasAnnotation: entitys){
-				SQLiteEntity s = SQLiteParseAnnotation.getValuesFromAnnotation(classHasAnnotation);
+			for (Class<?> classHasAnnotation : entitys) {
+				SQLiteEntity s = SQLiteParseAnnotation
+						.getValuesFromAnnotation(classHasAnnotation);
 				this.instance.entitys.put(s.getNameEntity(), s);
 			}
 			return this;
 		}
-		
+
 		public Builder database(List<Class<?>> list) throws SQLiteException {
-			databases((Class<?> [])list.toArray());
+			databases((Class<?>[]) list.toArray());
 			return this;
 		}
-		
-		public SQLiteCore build(){
+
+		public SQLiteCore build() {
 			return this.instance;
 		}
 	}
