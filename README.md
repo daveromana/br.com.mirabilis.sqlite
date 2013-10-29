@@ -84,8 +84,35 @@ mail: rodrigosimoesrosa@gmail.com
 		e.printStackTrace();
 	} catch (SQLiteException e) {
 		e.printStackTrace();
-	} catch (IllegalArgumentException e) {
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+
+### Select using paging default in UserDAO
+
+	UserDAO dao = null;
+	List<User> list = null;
+	try {
+		dao = new UserDAO(core);
+		u = dao.selectByPage(10, 1);
+	} catch (SQLiteException e) {
 		e.printStackTrace();
 	} catch (IOException e) {
 		e.printStackTrace();
-	}	
+	} catch (SQLiteEmptyException e) {
+		e.printStackTrace();
+	}
+
+### Update default in UserDAO
+
+	UserDAO dao = null;
+	try {
+		dao = new UserDAO(core);
+		user.setName("newName");
+		boolean successfully = dao.update(user);
+	} catch (SQLiteException e) {
+		e.printStackTrace();
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
+	
