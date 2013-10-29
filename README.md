@@ -157,11 +157,8 @@ mail: rodrigosimoesrosa@gmail.com
 ### Delete default in UserDAO
 
 	UserDAO dao = null;
-	User user = new User();
 	try {
 		dao = new UserDAO(core);
-		user.setName("name");
-		user.setValue(1);
 		boolean sucessfully = dao.delete(user);
 	} catch (SQLiteException e) {
 		e.printStackTrace();
