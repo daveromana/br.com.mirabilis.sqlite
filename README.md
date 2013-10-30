@@ -1,7 +1,7 @@
 SQLite
 ============================================================
 br.com.mirabilis.sqlite
-author: Rodrigo Simões Rosa		
+author: Rodrigo Simï¿½es Rosa
 mail: rodrigosimoesrosa@gmail.com
 
 ### Startup database.				
