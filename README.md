@@ -1,0 +1,2 @@
+br.com.mirabilis.sqlite
+=======================
