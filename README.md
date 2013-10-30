@@ -1,6 +1,6 @@
 SQLite
 ============================================================
-br.com.mirabilis.sqlite
+br.com.mirabilis.sqlite		
 author: Rodrigo Simões Rosa		
 mail: rodrigosimoesrosa@gmail.com
 
