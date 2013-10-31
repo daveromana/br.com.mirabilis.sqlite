@@ -17,7 +17,7 @@ import br.com.mirabilis.sqlite.manager.util.SQLiteDatabaseFile;
  * 
  * @author Rodrigo Simões Rosa
  */
-public class SQLiteConnection extends SQLiteOpenHelper {
+public final class SQLiteConnection extends SQLiteOpenHelper {
 
 	private static final String TAG = SQLiteConnection.class.getName();
 	private LinkedHashMap<String, SQLiteEntity> entitys;
@@ -41,7 +41,11 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase database) {
 		this.database = database;
 		if (entitys != null) {
-			createTables();
+			try {
+				createTables();
+			} catch (NoSuchFieldException e) {
+				throw new RuntimeException(e.getMessage(), e);
+			}
 		}
 	}
 
@@ -57,8 +61,9 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 
 	/**
 	 * Create tables
+	 * @throws NoSuchFieldException 
 	 */
-	public void createTables() {
+	public void createTables() throws NoSuchFieldException {
 		for (Map.Entry<String, SQLiteEntity> e : entitys.entrySet()) {
 			String query = e.getValue().getQueryCreateEntity();
 			this.database.execSQL(query);
@@ -118,8 +123,9 @@ public class SQLiteConnection extends SQLiteOpenHelper {
 		 * 
 		 * @param entitys
 		 * @return
+		 * @throws NoSuchFieldException 
 		 */
-		public Builder entitys(LinkedHashMap<String, SQLiteEntity> entitys) {
+		public Builder entitys(LinkedHashMap<String, SQLiteEntity> entitys) throws NoSuchFieldException {
 			this.instance.entitys = entitys;
 			this.instance.createTables();
 			return this;

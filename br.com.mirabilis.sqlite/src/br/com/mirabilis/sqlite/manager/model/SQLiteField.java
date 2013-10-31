@@ -1,6 +1,8 @@
 package br.com.mirabilis.sqlite.manager.model;
 
 import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
+import br.com.mirabilis.sqlite.manager.model.SQLiteEntity.SQLiteAction;
+import br.com.mirabilis.sqlite.manager.model.SQLiteEntity.SQLiteForeignModifier;
 
 /**
  * Class of field of entity
@@ -9,6 +11,7 @@ import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
  */
 public final class SQLiteField {
 
+	
 	/**
 	 * Enumeration that contain's types data of sqlite;
 	 * 
@@ -54,7 +57,7 @@ public final class SQLiteField {
 	public enum Field {
 		ID("_id");
 
-		private String value;
+		private final String value;
 
 		private Field(String value) {
 			this.value = value;
@@ -71,6 +74,10 @@ public final class SQLiteField {
 	private boolean notNull;
 	private boolean autoIncrement;
 	private boolean primaryKey;
+	private boolean foreignKey;
+	private SQLiteForeignModifier foreignKeyModifier;
+	private Class<? extends SQLiteTable> reference;
+	public SQLiteAction action;
 
 	/**
 	 * Constructor;
@@ -144,7 +151,40 @@ public final class SQLiteField {
 	public boolean isAutoIncrement() {
 		return autoIncrement;
 	}
+	
+	/**
+	 * Return if is field is foreignkey.
+	 * 
+	 * @return
+	 */
+	public boolean isForeignKey() {
+		return foreignKey;
+	}
 
+	/**
+	 * Return ForeignKeyModifier.
+	 * @return
+	 */
+	public SQLiteForeignModifier getForeignKeyModifier() {
+		return foreignKeyModifier;
+	}
+	
+	/**
+	 * Return reference from that primarykey in other table that here is foreignKey.
+	 * @return
+	 */
+	public Class<? extends SQLiteTable> getReference() {
+		return reference;
+	}
+	
+	/**
+	 * Return action from foreignkeymodifier.
+	 * @return
+	 */
+	public SQLiteAction getAction() {
+		return action;
+	}
+	
 	@Override
 	public String toString() {
 		return name;
@@ -205,12 +245,58 @@ public final class SQLiteField {
 		}
 
 		/**
+		 * Set field as foreignkey.
+		 * @param foreignKey
+		 * @return
+		 */
+		public Builder foreignKey(boolean foreignKey) {
+			this.instance.foreignKey = foreignKey;
+			return this;
+		}
+		
+		/**
+		 * Set field as foreignKeyModifier.
+		 * @param foreignKeyModifier
+		 * @return
+		 */
+		public Builder foreignKeyModifier(SQLiteForeignModifier foreignKeyModifier){
+			this.instance.foreignKeyModifier = foreignKeyModifier;
+			return this;
+		}
+		
+		/**
+		 * Set field reference.
+		 * @param reference
+		 * @return
+		 */
+		public Builder reference(Class<? extends SQLiteTable> reference){
+			this.instance.reference = reference;
+			return this;
+		}
+
+		/**
+		 * Set field action
+		 * @param action
+		 * @return
+		 */
+		public Builder action(SQLiteAction action) {
+			this.instance.action = action;
+			return this;
+		}
+
+		/**
 		 * Build {@link SQLiteField}
 		 * 
 		 * @return
+		 * @throws SQLiteException 
 		 */
-		public SQLiteField build() {
+		public SQLiteField build() throws SQLiteException {
+			if(this.instance.foreignKey && this.instance.reference == null){
+				throw new SQLiteException("You must inform the reference to mark this field as foreignKey!");
+			}
 			return this.instance;
 		}
+
 	}
+
 }

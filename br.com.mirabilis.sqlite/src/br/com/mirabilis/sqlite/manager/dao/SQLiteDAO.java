@@ -39,9 +39,10 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 	 * @param database
 	 * @throws IOException
 	 * @throws SQLiteException
+	 * @throws NoSuchFieldException
 	 */
 	public SQLiteDAO(SQLiteCore core, Class<T> classHasAnnotation)
-			throws SQLiteException, IOException {
+			throws SQLiteException, IOException, NoSuchFieldException {
 		core.start();
 		this.database = core.getConnection().getWritableDatabase();
 		this.classHasAnnotation = classHasAnnotation;
@@ -349,7 +350,7 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 	 * @return
 	 */
 	public abstract T parser(Cursor cursor);
-
+	
 	/**
 	 * Return contentValues by Data.
 	 * 

@@ -16,9 +16,9 @@ import br.com.mirabilis.sqlite.manager.model.SQLiteField;
  * 
  * @author Rodrigo Simões Rosa
  */
-public class SQLiteParseAnnotation {
+public final class SQLiteParseAnnotation {
 
-	public static SQLiteEntity getValuesFromAnnotation(
+	public final static SQLiteEntity getValuesFromAnnotation(
 			Class<?> classHasAnnotation) throws SQLiteException {
 		SQLiteAnnotationEntity entityAnnotation = null;
 		List<SQLiteField> fields = null;
@@ -78,11 +78,15 @@ public class SQLiteParseAnnotation {
 	 * @return
 	 * @throws SQLiteException
 	 */
-	public static SQLiteField getSQLiteField(SQLiteAnnotationField annotation)
+	public final static SQLiteField getSQLiteField(SQLiteAnnotationField annotation)
 			throws SQLiteException {
 		return new SQLiteField.Builder(annotation.name(), annotation.type())
 				.autoIncrement(annotation.autoIncrement())
 				.notNull(annotation.notNull())
-				.primaryKey(annotation.primaryKey()).build();
+				.primaryKey(annotation.primaryKey())
+				.reference(annotation.reference())
+				.foreignKey(annotation.foreignKey())
+				.foreignKeyModifier(annotation.foreignKeyModifier())
+				.action(annotation.action()).build();
 	}
 }

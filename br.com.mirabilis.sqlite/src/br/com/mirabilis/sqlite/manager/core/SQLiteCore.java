@@ -19,7 +19,7 @@ import br.com.mirabilis.sqlite.manager.util.SQLiteDatabaseFile;
  * 
  * @author Rodrigo Simões Rosa
  */
-public class SQLiteCore {
+public final class SQLiteCore {
 
 	private int version;
 	private String pathSQLiteFile;
@@ -52,8 +52,9 @@ public class SQLiteCore {
 	 * 
 	 * @throws IOException
 	 * @throws SQLiteException
+	 * @throws NoSuchFieldException 
 	 */
-	public void start() throws SQLiteException, IOException {
+	public void start() throws SQLiteException, IOException, NoSuchFieldException {
 		if (this.entitys == null || this.entitys.isEmpty()) {
 			throw new SQLiteException(
 					"There is no entity or a mapping file, enter one of these information to initialize the database.");
@@ -75,6 +76,8 @@ public class SQLiteCore {
 		} catch (IOException e) {
 			throw new SQLiteException(
 					"An error occurred while decrypting the file.");
+		} catch (NoSuchFieldException e) {
+			throw new SQLiteException(e.getMessage());
 		}
 	}
 
@@ -172,8 +175,9 @@ public class SQLiteCore {
 	 * Create database;
 	 * 
 	 * @throws SQLiteException
+	 * @throws NoSuchFieldException 
 	 */
-	public void connect() throws SQLiteException {
+	public void connect() throws SQLiteException, NoSuchFieldException {
 		connection = null;
 
 		if (entitys != null) {
