@@ -9,7 +9,6 @@ import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationField;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
 import br.com.mirabilis.sqlite.manager.model.SQLiteEntity;
 import br.com.mirabilis.sqlite.manager.model.SQLiteField;
-import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteType;
 
 /**
  * Recovery values of {@link SQLiteAnnotationEntity} and
@@ -81,8 +80,7 @@ public class SQLiteParseAnnotation {
 	 */
 	public static SQLiteField getSQLiteField(SQLiteAnnotationField annotation)
 			throws SQLiteException {
-		return new SQLiteField.Builder(annotation.name(),
-				SQLiteType.getValue(annotation.type()))
+		return new SQLiteField.Builder(annotation.name(), annotation.type())
 				.autoIncrement(annotation.autoIncrement())
 				.notNull(annotation.notNull())
 				.primaryKey(annotation.primaryKey()).build();
