@@ -14,13 +14,13 @@ public final class SQLiteField {
 	 * 
 	 * @author Rodrigo Simões Rosa
 	 */
-	public enum SQLiteType {
+	public enum SQLiteFieldType {
 		NULL("null"), TEXT("text"), INTEGER("integer"), REAL("real"), BLOB(
 				"blob"), DATETIME("datetime");
 
 		private String type;
 
-		private SQLiteType(String value) {
+		private SQLiteFieldType(String value) {
 			this.type = value;
 
 		}
@@ -31,13 +31,13 @@ public final class SQLiteField {
 		}
 
 		/**
-		 * Recovery {@link SQLiteType} by {@link String}
+		 * Recovery {@link SQLiteFieldType} by {@link String}
 		 * 
 		 * @param type
 		 * @return
 		 */
-		public static SQLiteType getValue(String type) {
-			for (SQLiteField.SQLiteType t : values()) {
+		public static SQLiteFieldType getValue(String type) {
+			for (SQLiteField.SQLiteFieldType t : values()) {
 				if (t.toString().equalsIgnoreCase(type)) {
 					return t;
 				}
@@ -67,7 +67,7 @@ public final class SQLiteField {
 	}
 
 	private String name;
-	private SQLiteType type;
+	private SQLiteFieldType type;
 	private boolean notNull;
 	private boolean autoIncrement;
 	private boolean primaryKey;
@@ -78,7 +78,7 @@ public final class SQLiteField {
 	 * @param name
 	 * @param type
 	 */
-	private SQLiteField(String name, SQLiteType type) {
+	private SQLiteField(String name, SQLiteFieldType type) {
 		this.name = name;
 		this.type = type;
 	}
@@ -120,14 +120,14 @@ public final class SQLiteField {
 	}
 
 	/**
-	 * AutoIncrement, verify if {@link #type} is {@link SQLiteType #INTEGER}
+	 * AutoIncrement, verify if {@link #type} is {@link SQLiteFieldType #INTEGER}
 	 * 
 	 * @param value
 	 * @throws SQLiteException
 	 */
 	public void setAutoIncrement(boolean value) throws SQLiteException {
 		if (value) {
-			if (!(this.type.equals(SQLiteType.INTEGER))) {
+			if (!(this.type.equals(SQLiteFieldType.INTEGER))) {
 				throw new SQLiteException(
 						"It is not possible to perform an auto increment than the type Integer!");
 			} else {
@@ -165,7 +165,7 @@ public final class SQLiteField {
 		 * @param name
 		 * @param type
 		 */
-		public Builder(String name, SQLiteType type) {
+		public Builder(String name, SQLiteFieldType type) {
 			this.instance = new SQLiteField(name, type);
 		}
 
