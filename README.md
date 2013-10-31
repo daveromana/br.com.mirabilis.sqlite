@@ -26,10 +26,10 @@ mail: rodrigosimoesrosa@gmail.com
 	@SQLiteAnnotationEntity(name="user")
 	public class User extends SQLiteTable {
 	
-		@SQLiteAnnotationField(name="name", type="text")
+		@SQLiteAnnotationField(name="name", type=SQLiteType.TEXT)
 		private String name;
 	
-		@SQLiteAnnotationField(name="value", type="integer")
+		@SQLiteAnnotationField(name="value", type=SQLiteType.INTEGER)
 		private Integer value;
 	
 		public void setName(String name) {
