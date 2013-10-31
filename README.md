@@ -22,14 +22,15 @@ mail: rodrigosimoesrosa@gmail.com
 	import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationEntity;
 	import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationField;
 	import br.com.mirabilis.sqlite.manager.model.SQLiteTable;
+	import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteFieldType;
 	
 	@SQLiteAnnotationEntity(name="user")
 	public class User extends SQLiteTable {
 	
-		@SQLiteAnnotationField(name="name", type=SQLiteType.TEXT)
+		@SQLiteAnnotationField(name="name", type=SQLiteFieldType.TEXT)
 		private String name;
 	
-		@SQLiteAnnotationField(name="value", type=SQLiteType.INTEGER)
+		@SQLiteAnnotationField(name="value", type=SQLiteFieldType.INTEGER)
 		private Integer value;
 	
 		public void setName(String name) {
