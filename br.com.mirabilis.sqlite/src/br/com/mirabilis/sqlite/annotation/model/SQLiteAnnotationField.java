@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteType;
+import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteFieldType;
 
 /**
  * Anottation of field sqlite.
@@ -19,7 +19,7 @@ import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteType;
 public @interface SQLiteAnnotationField {
 	String name();
 
-	SQLiteType type();
+	SQLiteFieldType type();
 
 	boolean primaryKey() default false;
 

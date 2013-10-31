@@ -1,7 +1,7 @@
 package br.com.mirabilis.sqlite.manager.model;
 
 import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationField;
-import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteType;
+import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteFieldType;
 
 /**
  * Class abstract that represent's Table's inside SQLite.
@@ -10,7 +10,7 @@ import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteType;
  */
 public abstract class SQLiteTable {
 
-	@SQLiteAnnotationField(name = "_id", type = SQLiteType.INTEGER, autoIncrement = true, notNull = true, primaryKey = true)
+	@SQLiteAnnotationField(name = "_id", type = SQLiteFieldType.INTEGER, autoIncrement = true, notNull = true, primaryKey = true)
 	protected long _id;
 
 	/**
