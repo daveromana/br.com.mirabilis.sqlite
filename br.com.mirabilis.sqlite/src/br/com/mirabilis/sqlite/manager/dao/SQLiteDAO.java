@@ -13,7 +13,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationEntity;
 import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationField;
 import br.com.mirabilis.sqlite.manager.core.SQLiteCore;
-import br.com.mirabilis.sqlite.manager.dao.util.ContentValuesCreator;
+import br.com.mirabilis.sqlite.manager.dao.util.SQLiteDataManager;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteEmptyException;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteNotNullFieldException;
@@ -349,8 +349,22 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 	 *            don't forget call cursor.close(), before do parser;
 	 * @return
 	 */
-	public abstract T parser(Cursor cursor);
-	
+	private T parser(Cursor cursor) throws InstantiationException, IllegalAccessException {
+		T instance = classHasAnnotation.newInstance();
+		
+		/**
+		 * Set value using superclass. 
+		 */
+		SQLiteDataManager.setValueInstance(cursor, instance, classHasAnnotation.getSuperclass().getDeclaredFields());
+		
+		/**
+		 * Set value using class.
+		 */
+		SQLiteDataManager.setValueInstance(cursor, instance, classHasAnnotation.getDeclaredFields());
+		
+		return instance;
+	}
+
 	/**
 	 * Return contentValues by Data.
 	 * 
@@ -364,6 +378,6 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 	public ContentValues getContentValuesByData(T data)
 			throws IllegalArgumentException, IllegalAccessException,
 			SQLiteNotNullFieldException, SQLiteException {
-		return ContentValuesCreator.creator(data);
+		return SQLiteDataManager.getContentValues(data);
 	}
 }

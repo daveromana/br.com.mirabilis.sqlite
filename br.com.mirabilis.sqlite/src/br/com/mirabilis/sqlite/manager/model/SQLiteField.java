@@ -18,8 +18,7 @@ public final class SQLiteField {
 	 * @author Rodrigo Simões Rosa
 	 */
 	public enum SQLiteFieldType {
-		NULL("null"), TEXT("text"), INTEGER("integer"), REAL("real"), BLOB(
-				"blob"), DATETIME("datetime");
+		NULL("null"), TEXT("text"), INTEGER("integer"), REAL("real"), BLOB("blob"), DATETIME("datetime");
 
 		private String type;
 
