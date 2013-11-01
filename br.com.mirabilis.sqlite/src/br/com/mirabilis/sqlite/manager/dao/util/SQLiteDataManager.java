@@ -1,14 +1,12 @@
 package br.com.mirabilis.sqlite.manager.dao.util;
 
 import java.lang.reflect.Field;
-import java.util.Calendar;
 
+import android.content.ContentValues;
+import android.database.Cursor;
 import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationField;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteException;
 import br.com.mirabilis.sqlite.manager.exception.SQLiteNotNullFieldException;
-import br.com.mirabilis.sqlite.util.CalendarUtils;
-import android.content.ContentValues;
-import android.database.Cursor;
 
 /**
  * Class that recovery ContentValues by T data.

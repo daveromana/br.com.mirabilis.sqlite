@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -30,8 +29,7 @@ import br.com.mirabilis.sqlite.manager.model.SQLiteTable;
 public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 
 	protected SQLiteDatabase database;
-	protected Class<T> classHasAnnotation;
-	protected Context context;
+	private Class<T> classHasAnnotation;
 
 	/**
 	 * Constructor;
