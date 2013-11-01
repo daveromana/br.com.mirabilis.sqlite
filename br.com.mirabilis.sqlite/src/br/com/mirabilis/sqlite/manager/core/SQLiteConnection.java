@@ -38,6 +38,14 @@ public final class SQLiteConnection extends SQLiteOpenHelper {
 	}
 
 	@Override
+	public void onOpen(SQLiteDatabase db) {
+		super.onOpen(db);
+		if(!db.isReadOnly()){
+			db.execSQL("PRAGMA foreign_keys=ON;");
+		}
+	}
+	
+	@Override
 	public void onCreate(SQLiteDatabase database) {
 		this.database = database;
 		if (entitys != null) {

@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationEntity;
@@ -30,6 +31,7 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 
 	protected SQLiteDatabase database;
 	private Class<T> classHasAnnotation;
+	private SQLiteCore core;
 
 	/**
 	 * Constructor;
@@ -109,9 +111,11 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 		long row = 0;
 
 		try {
-			row = database.insert(getTable(), null,
+			row = database.insertOrThrow(getTable(), null,
 					getContentValuesByData(data));
-		} catch (IllegalArgumentException e) {
+		}catch(SQLException e){
+			throw new SQLiteException("Error " + e.getMessage());
+		}catch (IllegalArgumentException e) {
 			throw new SQLiteException("Error " + e.getMessage());
 		} catch (IllegalAccessException e) {
 			throw new SQLiteException("Error " + e.getMessage());
@@ -143,9 +147,9 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 		long row = 0;
 		try {
 			values = getContentValuesByData(data);
-			row = database.update(getTable(), values, SQLiteField.Field.ID
+			row = database.updateWithOnConflict(getTable(), values, SQLiteField.Field.ID
 					.toString().concat("=?"), new String[] { String
-					.valueOf(data.getId()) });
+					.valueOf(data.getId()) }, this.core.getUpdateConflit());
 		} catch (IllegalArgumentException e) {
 			throw new SQLiteException("Error " + e.getMessage());
 		} catch (IllegalAccessException e) {

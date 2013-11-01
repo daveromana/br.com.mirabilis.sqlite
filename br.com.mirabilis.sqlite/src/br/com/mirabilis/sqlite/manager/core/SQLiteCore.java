@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import br.com.mirabilis.sqlite.annotation.SQLiteParseAnnotation;
 import br.com.mirabilis.sqlite.cypher.CypherFileManager;
@@ -32,6 +33,15 @@ public final class SQLiteCore {
 	private SQLiteDatabaseFile databaseFile;
 	private SQLiteConnection connection;
 	private File file;
+	
+	private int updateConflit;
+	
+	/**
+	 * Boot block
+	 */
+	{
+		this.updateConflit = SQLiteDatabase.CONFLICT_FAIL;
+	}
 
 	/**
 	 * Constructor default
@@ -81,6 +91,22 @@ public final class SQLiteCore {
 		}
 	}
 
+	/**
+	 * Set type action when exist conflit in update.
+	 * @param updateConflit
+	 */
+	public void setUpdateConflit(int updateConflit) {
+		this.updateConflit = updateConflit;
+	}
+	
+	/**
+	 * Return type action when exist conflit.
+	 * @return
+	 */
+	public int getUpdateConflit() {
+		return updateConflit;
+	}
+	
 	/**
 	 * Decrypt file of sqlite.
 	 * 
@@ -198,6 +224,19 @@ public final class SQLiteCore {
 	public CypherType getCypher() {
 		return this.cypher;
 	}
+	
+	/**
+	 * Get version SQLite of Android.
+	 * @return
+	 */
+	public static String getSQLiteVersion(){
+		Cursor cursor = SQLiteDatabase.openOrCreateDatabase(":memory:", null).rawQuery("select sqlite_version() as sqlite_version", null);
+		StringBuilder sqliteVersion = new StringBuilder();
+		while(cursor.moveToNext()){
+			sqliteVersion.append(cursor.getString(0));
+		}
+		return sqliteVersion.toString();
+	}
 
 	/**
 	 * Get path with database folder concat
@@ -292,6 +331,11 @@ public final class SQLiteCore {
 
 		public Builder database(List<Class<?>> list) throws SQLiteException {
 			databases((Class<?>[]) list.toArray());
+			return this;
+		}
+		
+		public Builder updateConflit(int updateConflit){
+			this.instance.updateConflit = updateConflit;
 			return this;
 		}
 

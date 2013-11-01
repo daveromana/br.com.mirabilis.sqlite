@@ -48,7 +48,7 @@ public final class SQLiteEntity {
 	 * 
 	 */
 	public enum SQLiteAction {
-		ON_DELETE("ON DELETE"), ON_UPDATE("on update");
+		ON_DELETE("on delete"), ON_UPDATE("on update");
 
 		private String value;
 

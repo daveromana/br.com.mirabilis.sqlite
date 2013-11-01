@@ -23,4 +23,8 @@ public class SQLiteException extends Exception {
 	public SQLiteException(String exception) {
 		super(exception);
 	}
+
+	public SQLiteException(String exception, Throwable throwable) {
+		super(exception, throwable);
+	}
 }
