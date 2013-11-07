@@ -49,6 +49,27 @@ mail: rodrigosimoesrosa@gmail.com
 			return value;
 		}
 	}		
+
+### ForeignKey
+
+	import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationEntity;		
+	import br.com.mirabilis.sqlite.annotation.model.SQLiteAnnotationField;		
+	import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteFieldType;		
+	import br.com.mirabilis.sqlite.manager.model.SQLiteTable;
+
+	@SQLiteAnnotationEntity(name = "delivery")
+	public class Delivery extends SQLiteTable {
+	
+	@SQLiteAnnotationField(name = "idRequest", type = SQLiteFieldType.INTEGER, foreignKey = true , foreignKeyModifier = SQLiteForeignModifier.CASCADE, reference= Request.class)
+	private long idRequest;
+	
+	@SQLiteAnnotationField(name = "idUser", type = SQLiteFieldType.INTEGER, foreignKey = true , foreignKeyModifier = SQLiteForeignModifier.CASCADE, reference= User.class)
+	private long idUser;
+	
+	@SQLiteAnnotationField(name = "numDelivery", type = SQLiteFieldType.INTEGER)
+	private Integer numDelivery;		
+}
+	
 	
 ### Dao class that implements the model manipulations User in SQLite
 
