@@ -64,15 +64,6 @@ mail: rodrigosimoesrosa@gmail.com
 			super(core, User.class);
 		}
 		
-		@Override
-		public User parser(Cursor cursor) {
-			User user = new User();
-			user.setId(cursor.getInt(0));
-			user.setName(cursor.getString(1));
-			user.setValue(cursor.getInt(2));
-			return user;
-		}
-		
 		//Make your custom's methods for UserDAO
 	}
 	
