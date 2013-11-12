@@ -1,5 +1,6 @@
 package br.com.mirabilis.sqlite.manager.dao;
 
+import br.com.mirabilis.sqlite.manager.model.SQLiteTO;
 import br.com.mirabilis.sqlite.manager.model.SQLiteTable;
 
 /**
@@ -7,9 +8,9 @@ import br.com.mirabilis.sqlite.manager.model.SQLiteTable;
  * @author Rodrigo Simões Rosa.
  *
  * @param <T> {@link SQLiteTable}.
- * @param <U> Model (TO);
+ * @param <U> {@link SQLiteTO} that receive <T>.
  */
-public interface SQLiteParser<T,U> {
+public interface SQLiteParser<T extends SQLiteTable, U extends SQLiteTO<T>> {
 
 	/**
 	 * Convert U Model (TO) to T {@link SQLiteTable}
