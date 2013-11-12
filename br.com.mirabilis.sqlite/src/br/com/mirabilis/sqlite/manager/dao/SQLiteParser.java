@@ -1,5 +1,6 @@
 package br.com.mirabilis.sqlite.manager.dao;
 
+import android.net.ParseException;
 import br.com.mirabilis.sqlite.manager.model.SQLiteTO;
 import br.com.mirabilis.sqlite.manager.model.SQLiteTable;
 
@@ -24,5 +25,5 @@ public interface SQLiteParser<T extends SQLiteTable, U extends SQLiteTO<T>> {
 	 * @param model
 	 * @return
 	 */
-	public U parse(T table);
+	public U parse(T table) throws ParseException;
 }
