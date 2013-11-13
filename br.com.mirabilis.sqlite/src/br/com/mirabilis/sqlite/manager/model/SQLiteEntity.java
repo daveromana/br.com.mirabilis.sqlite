@@ -63,6 +63,16 @@ public final class SQLiteEntity {
 	}
 
 	/**
+	 * Type of relationship between tables.
+	 * 
+	 * @author Rodrigo Simões Rosa
+	 * 
+	 */
+	public enum SQLiteRelationship {
+		ONE_TO_ONE, ONE_TO_MANY, MANY_TO_ONE;
+	}
+
+	/**
 	 * Enumeration that define type of modifier in foreignkey
 	 * 
 	 * @author Rodrigo Simões Rosa Foreign key ON DELETE and ON UPDATE clauses
@@ -198,8 +208,8 @@ public final class SQLiteEntity {
 						+ SQLiteNormalization.FOREIGN_KEY.toString());
 				fieldQuery.append(" " + f.getName());
 
-				Field fieldForeign = f.getReference().getSuperclass().getDeclaredField(
-						SQLiteField.Field.ID.toString());
+				Field fieldForeign = f.getReference().getSuperclass()
+						.getDeclaredField(SQLiteField.Field.ID.toString());
 				fieldQuery.append(" "
 						+ SQLiteNormalization.REFERENCES.toString());
 				SQLiteAnnotationEntity entityForeign = f.getReference()

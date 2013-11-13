@@ -14,7 +14,7 @@ import br.com.mirabilis.sqlite.manager.exception.SQLiteNotNullFieldException;
  * @author Rodrigo Simões Rosa.
  */
 public class SQLiteDataManager {
-
+	
 	/**
 	 * Set values in instance.
 	 * 
@@ -24,7 +24,7 @@ public class SQLiteDataManager {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public static <T> void setValueInstance(Cursor cursor, T instance,
+	public static <T> void setValue(Cursor cursor, T instance,
 			Field[] fields) throws IllegalArgumentException,
 			IllegalAccessException {
 		for (Field field : fields) {

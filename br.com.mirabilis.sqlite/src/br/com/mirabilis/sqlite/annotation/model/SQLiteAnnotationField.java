@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 
 import br.com.mirabilis.sqlite.manager.model.SQLiteEntity.SQLiteAction;
 import br.com.mirabilis.sqlite.manager.model.SQLiteEntity.SQLiteForeignModifier;
+import br.com.mirabilis.sqlite.manager.model.SQLiteEntity.SQLiteRelationship;
 import br.com.mirabilis.sqlite.manager.model.SQLiteField.SQLiteFieldType;
 import br.com.mirabilis.sqlite.manager.model.SQLiteTable;
 
@@ -52,23 +53,30 @@ public @interface SQLiteAnnotationField {
 	Class<? extends SQLiteTable> reference() default SQLiteTable.class;
 
 	/**
-	 * autoincrement in field.
-	 * @return
-	 */
-	boolean autoIncrement() default false;
-	
-	/**
 	 * modifier of foreign key.
 	 * @return
 	 */
 	SQLiteForeignModifier foreignKeyModifier() default SQLiteForeignModifier.RESTRICT;
-
+	
 	/**
 	 * not null in field.
 	 * @return
 	 */
 	boolean notNull() default false;
-
+	
+	/**
+	 * autoincrement in field.
+	 * @return
+	 */
+	boolean autoIncrement() default false;
+	
+	
+	/**
+	 * relationship field with class in {@link #reference()}
+	 * @return
+	 */
+	SQLiteRelationship relationship() default SQLiteRelationship.ONE_TO_MANY;
+	
 	/**
 	 * action in field foreignkey
 	 * @return

@@ -113,9 +113,9 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 		try {
 			row = database.insertOrThrow(getTable(), null,
 					getContentValuesByData(data));
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			throw new SQLiteException("Error " + e.getMessage());
-		}catch (IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			throw new SQLiteException("Error " + e.getMessage());
 		} catch (IllegalAccessException e) {
 			throw new SQLiteException("Error " + e.getMessage());
@@ -147,9 +147,10 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 		long row = 0;
 		try {
 			values = getContentValuesByData(data);
-			row = database.updateWithOnConflict(getTable(), values, SQLiteField.Field.ID
-					.toString().concat("=?"), new String[] { String
-					.valueOf(data.getId()) }, this.core.getUpdateConflit());
+			row = database.updateWithOnConflict(getTable(), values,
+					SQLiteField.Field.ID.toString().concat("=?"),
+					new String[] { String.valueOf(data.getId()) },
+					this.core.getUpdateConflit());
 		} catch (IllegalArgumentException e) {
 			throw new SQLiteException("Error " + e.getMessage());
 		} catch (IllegalAccessException e) {
@@ -351,19 +352,22 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 	 *            don't forget call cursor.close(), before do parser;
 	 * @return
 	 */
-	private T parser(Cursor cursor) throws InstantiationException, IllegalAccessException {
+	private T parser(Cursor cursor) throws InstantiationException,
+			IllegalAccessException {
 		T instance = classHasAnnotation.newInstance();
-		
+
 		/**
-		 * Set value using superclass. 
+		 * Set value using superclass.
 		 */
-		SQLiteDataManager.setValueInstance(cursor, instance, classHasAnnotation.getSuperclass().getDeclaredFields());
-		
+		SQLiteDataManager.setValue(cursor, instance, classHasAnnotation
+				.getSuperclass().getDeclaredFields());
+
 		/**
 		 * Set value using class.
 		 */
-		SQLiteDataManager.setValueInstance(cursor, instance, classHasAnnotation.getDeclaredFields());
-		
+		SQLiteDataManager.setValue(cursor, instance,
+				classHasAnnotation.getDeclaredFields());
+
 		return instance;
 	}
 
