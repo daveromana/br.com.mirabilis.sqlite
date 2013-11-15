@@ -14,7 +14,7 @@ import br.com.mirabilis.sqlite.manager.exception.SQLiteNotNullFieldException;
  * @author Rodrigo Simões Rosa.
  */
 public class SQLiteDataManager {
-	
+
 	/**
 	 * Set values in instance.
 	 * 
@@ -24,13 +24,13 @@ public class SQLiteDataManager {
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	public static <T> void setValue(Cursor cursor, T instance,
-			Field[] fields) throws IllegalArgumentException,
-			IllegalAccessException {
+	public static <T> void setValue(Cursor cursor, T instance, Field[] fields)
+			throws IllegalArgumentException, IllegalAccessException {
 		for (Field field : fields) {
-			if(field.isAnnotationPresent(SQLiteAnnotationField.class)){
+			if (field.isAnnotationPresent(SQLiteAnnotationField.class)) {
 				field.setAccessible(true);
-				SQLiteAnnotationField annotField = field.getAnnotation(SQLiteAnnotationField.class);
+				SQLiteAnnotationField annotField = field
+						.getAnnotation(SQLiteAnnotationField.class);
 				int index = cursor.getColumnIndex(annotField.name());
 				Class<?> classType = field.getType();
 				switch (annotField.type()) {
@@ -40,16 +40,20 @@ public class SQLiteDataManager {
 					break;
 
 				case INTEGER:
-					if (classType.equals(Integer.class) || classType.equals(int.class)) {
+					if (classType.equals(Integer.class)
+							|| classType.equals(int.class)) {
 						Integer integerValue = cursor.getInt(index);
 						field.set(instance, integerValue);
-					} else if (classType.equals(Long.class) || classType.equals(long.class)) {
+					} else if (classType.equals(Long.class)
+							|| classType.equals(long.class)) {
 						Long longValue = cursor.getLong(index);
 						field.set(instance, longValue);
-					} else if (classType.equals(Short.class) || classType.equals(short.class)) {
+					} else if (classType.equals(Short.class)
+							|| classType.equals(short.class)) {
 						Short shortValue = cursor.getShort(index);
 						field.set(instance, shortValue);
-					} else if (classType.equals(Boolean.class) || classType.equals(boolean.class)) {
+					} else if (classType.equals(Boolean.class)
+							|| classType.equals(boolean.class)) {
 						Boolean booleanValue = cursor.getInt(index) == 1;
 						field.set(instance, booleanValue);
 					}
@@ -66,10 +70,12 @@ public class SQLiteDataManager {
 					break;
 
 				case REAL:
-					if (classType.equals(Double.class) || classType.equals(double.class)) {
+					if (classType.equals(Double.class)
+							|| classType.equals(double.class)) {
 						Double doubleValue = cursor.getDouble(index);
 						field.set(instance, doubleValue);
-					} else if (classType.equals(Float.class) || classType.equals(float.class)) {
+					} else if (classType.equals(Float.class)
+							|| classType.equals(float.class)) {
 						Float floatValue = cursor.getFloat(index);
 						field.set(instance, floatValue);
 					}
@@ -101,7 +107,8 @@ public class SQLiteDataManager {
 		for (Field field : c.getDeclaredFields()) {
 
 			if (field.isAnnotationPresent(SQLiteAnnotationField.class)) {
-				SQLiteAnnotationField fieldAnnotation = field.getAnnotation(SQLiteAnnotationField.class);
+				SQLiteAnnotationField fieldAnnotation = field
+						.getAnnotation(SQLiteAnnotationField.class);
 
 				field.setAccessible(true);
 				Object value = field.get(data);

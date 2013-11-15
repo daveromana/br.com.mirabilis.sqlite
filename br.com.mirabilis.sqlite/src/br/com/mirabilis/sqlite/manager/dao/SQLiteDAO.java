@@ -351,9 +351,11 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 	 * @param cursor
 	 *            don't forget call cursor.close(), before do parser;
 	 * @return
+	 * @throws SQLiteException
+	 * @throws IllegalArgumentException
 	 */
 	private T parser(Cursor cursor) throws InstantiationException,
-			IllegalAccessException {
+			IllegalAccessException, IllegalArgumentException, SQLiteException {
 		T instance = classHasAnnotation.newInstance();
 
 		/**

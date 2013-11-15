@@ -78,8 +78,8 @@ public final class SQLiteParseAnnotation {
 	 * @return
 	 * @throws SQLiteException
 	 */
-	public final static SQLiteField getSQLiteField(SQLiteAnnotationField annotation)
-			throws SQLiteException {
+	public final static SQLiteField getSQLiteField(
+			SQLiteAnnotationField annotation) throws SQLiteException {
 		return new SQLiteField.Builder(annotation.name(), annotation.type())
 				.autoIncrement(annotation.autoIncrement())
 				.notNull(annotation.notNull())
