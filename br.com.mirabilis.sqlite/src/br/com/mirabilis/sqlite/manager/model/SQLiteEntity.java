@@ -63,16 +63,6 @@ public final class SQLiteEntity {
 	}
 
 	/**
-	 * Type of relationship between tables.
-	 * 
-	 * @author Rodrigo Simões Rosa
-	 * 
-	 */
-	public enum SQLiteRelationship {
-		ONE_TO_ONE, ONE_TO_MANY, MANY_TO_ONE;
-	}
-
-	/**
 	 * Enumeration that define type of modifier in foreignkey
 	 * 
 	 * @author Rodrigo Simões Rosa Foreign key ON DELETE and ON UPDATE clauses
