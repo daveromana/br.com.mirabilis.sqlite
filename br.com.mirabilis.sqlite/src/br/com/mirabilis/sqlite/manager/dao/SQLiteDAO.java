@@ -44,6 +44,7 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 	public SQLiteDAO(SQLiteCore core, Class<T> classHasAnnotation)
 			throws SQLiteException, IOException, NoSuchFieldException {
 		core.start();
+		this.core = core;
 		this.database = core.getConnection().getWritableDatabase();
 		this.classHasAnnotation = classHasAnnotation;
 	}
@@ -344,6 +345,14 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 					" isn't valid SQLiteAnnotationEntity"));
 		}
 	}
+	
+	/**
+	 * Return {@link SQLiteCore}.
+	 * @return
+	 */
+	public SQLiteCore getCore() {
+		return core;
+	}
 
 	/**
 	 * Return object parsed;
@@ -354,7 +363,7 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 	 * @throws SQLiteException
 	 * @throws IllegalArgumentException
 	 */
-	private T parser(Cursor cursor) throws InstantiationException,
+	public T parser(Cursor cursor) throws InstantiationException,
 			IllegalAccessException, IllegalArgumentException, SQLiteException {
 		T instance = classHasAnnotation.newInstance();
 
