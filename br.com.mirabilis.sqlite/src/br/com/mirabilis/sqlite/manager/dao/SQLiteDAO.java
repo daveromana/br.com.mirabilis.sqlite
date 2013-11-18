@@ -62,14 +62,11 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 		Cursor cursor = null;
 		try {
 			cursor = this.database.rawQuery(query, null);
-			if(cursor != null) {
-				cursor.moveToFirst();
-			}
 		} catch (Throwable e) {
 			throw new SQLiteException("Error " + e.getMessage()
 					+ "  on execute query " + query);
 		}
-		if (cursor == null) {
+		if (!(cursor.moveToFirst()) || cursor.getCount() == 0) {
 			throw new SQLiteEmptyException();
 		}
 		return cursor;
