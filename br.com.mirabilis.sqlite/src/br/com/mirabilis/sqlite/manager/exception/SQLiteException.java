@@ -13,7 +13,7 @@ public class SQLiteException extends Exception {
 	private static final long serialVersionUID = -4913326707914327547L;
 
 	public SQLiteException() {
-		super("SQLiteManagerException exception");
+		super("SQLiteException exception");
 	}
 
 	public SQLiteException(Throwable throwable) {

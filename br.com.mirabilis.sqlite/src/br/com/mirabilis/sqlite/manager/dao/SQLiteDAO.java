@@ -54,20 +54,25 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 	 * 
 	 * @param query
 	 * @return {@link Cursor}
+	 * @throws SQLiteEmptyException
 	 * @throws SQLConnectionException
 	 */
-	@SuppressWarnings("finally")
-	public final Cursor query(String query) throws SQLiteException {
+	public final Cursor query(String query) throws SQLiteException,
+			SQLiteEmptyException {
 		Cursor cursor = null;
 		try {
 			cursor = this.database.rawQuery(query, null);
-			cursor.moveToFirst();
+			if(cursor != null) {
+				cursor.moveToFirst();
+			}
 		} catch (Throwable e) {
 			throw new SQLiteException("Error " + e.getMessage()
 					+ "  on execute query " + query);
-		} finally {
-			return cursor;
 		}
+		if (cursor == null) {
+			throw new SQLiteEmptyException();
+		}
+		return cursor;
 	}
 
 	/**
@@ -345,9 +350,10 @@ public abstract class SQLiteDAO<T extends SQLiteTable> implements DAO<T> {
 					" isn't valid SQLiteAnnotationEntity"));
 		}
 	}
-	
+
 	/**
 	 * Return {@link SQLiteCore}.
+	 * 
 	 * @return
 	 */
 	public SQLiteCore getCore() {
