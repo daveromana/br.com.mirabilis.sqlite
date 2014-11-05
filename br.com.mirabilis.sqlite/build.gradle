@@ -8,6 +8,8 @@ android {
     compileSdkVersion 17
     buildToolsVersion "20.0.0"
 
+    compileOptions.encoding = 'windows-1251'
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'

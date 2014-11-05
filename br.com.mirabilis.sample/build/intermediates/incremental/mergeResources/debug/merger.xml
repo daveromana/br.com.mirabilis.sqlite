@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="2" >
+
+    <dataSet config="unspecified" >
+        <source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\intermediates\exploded-aar\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\unspecified\res" >
+            <file
+                name="ic_launcher"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\intermediates\exploded-aar\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\unspecified\res\drawable-hdpi-v4\ic_launcher.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\intermediates\exploded-aar\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\unspecified\res\drawable-mdpi-v4\ic_launcher.png"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\intermediates\exploded-aar\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\unspecified\res\drawable-xhdpi-v4\ic_launcher.png"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\intermediates\exploded-aar\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\unspecified\res\drawable-xxhdpi-v4\ic_launcher.png"
+                qualifiers="xxhdpi-v4"
+                type="drawable" />
+            <file
+                name="sqlite_main"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\intermediates\exploded-aar\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\unspecified\res\layout\sqlite_main.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="main"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\intermediates\exploded-aar\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\unspecified\res\menu\main.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\intermediates\exploded-aar\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\unspecified\res\values\values.xml"
+                qualifiers="" >
+                <string name="hello_world" >Hello world!
+                </string>
+
+                <dimen name="activity_vertical_margin" >16dp
+                </dimen>
+
+                <style
+                    name="AppTheme"
+                    parent="AppBaseTheme" >
+
+                    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+                </style>
+
+                <string name="action_settings" >Settings
+                </string>
+
+                <dimen name="activity_horizontal_margin" >16dp
+                </dimen>
+
+                <string name="app_name" >br.com.mirabilis.sqlite
+                </string>
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Light" >
+
+                    <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+                    -->
+                </style>
+            </file>
+            <file
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\intermediates\exploded-aar\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\unspecified\res\values-sw720dp-land-v13\values.xml"
+                qualifiers="sw720dp-land-v13" >
+                <dimen name="activity_horizontal_margin" >128dp
+                </dimen>
+            </file>
+        </source>
+    </dataSet>
+    <dataSet config="main" >
+        <source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res" >
+            <file
+                name="ic_launcher"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\drawable-hdpi\ic_launcher.png"
+                qualifiers="hdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\drawable-mdpi\ic_launcher.png"
+                qualifiers="mdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\drawable-xhdpi\ic_launcher.png"
+                qualifiers="xhdpi-v4"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\drawable-xxhdpi\ic_launcher.png"
+                qualifiers="xxhdpi-v4"
+                type="drawable" />
+            <file
+                name="activity_main"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\layout\activity_main.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="main"
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\menu\main.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\values\dimens.xml"
+                qualifiers="" >
+                <dimen name="activity_vertical_margin" >16dp
+                </dimen>
+                <dimen name="activity_horizontal_margin" >16dp
+                </dimen>
+            </file>
+            <file
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\values\strings.xml"
+                qualifiers="" >
+                <string name="hello_world" >Hello world!
+                </string>
+                <string name="action_settings" >Settings
+                </string>
+                <string name="app_name" >br.com.mirabilis.sample
+                </string>
+            </file>
+            <file
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\values\styles.xml"
+                qualifiers="" >
+
+                <style
+                    name="AppTheme"
+                    parent="AppBaseTheme" >
+
+                    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+                </style>
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Light" >
+
+                    <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+                    -->
+                </style>
+            </file>
+            <file
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\values-v11\styles.xml"
+                qualifiers="v11" >
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Holo.Light" >
+
+                    <!-- API 11 theme customizations can go here. -->
+                </style>
+            </file>
+            <file
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\values-v14\styles.xml"
+                qualifiers="v14" >
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Holo.Light.DarkActionBar" >
+
+                    <!-- API 14 theme customizations can go here. -->
+                </style>
+            </file>
+            <file
+                path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\res\values-w820dp\dimens.xml"
+                qualifiers="w820dp-v13" >
+                <dimen name="activity_horizontal_margin" >64dp
+                </dimen>
+            </file>
+        </source>
+        <source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\generated\res\rs\debug" />
+        <source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\generated\res\generated\debug" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build-types\debug\res" />
+    </dataSet>
+
+</merger>
