@@ -1,10 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="2" >
-
-    <dataSet config="main" >
-        <source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\src\androidTest\res" />
-        <source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\generated\res\rs\test\debug" />
-        <source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\generated\res\generated\test\debug" />
-    </dataSet>
-
-</merger>
+<merger version="3"><dataSet config="main"><source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\src\androidTest\res"/><source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\generated\res\rs\test\debug"/><source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sample\build\generated\res\generated\test\debug"/></dataSet><mergedItems/></merger>

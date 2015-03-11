@@ -1,11 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="2" >
-
-    <dataSet config="main" >
-        <source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\assets" />
-    </dataSet>
-    <dataSet config="debug" >
-        <source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\build-types\debug\assets" />
-    </dataSet>
-
-</merger>
+<merger version="3"><dataSet config="main"><source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\assets"/></dataSet><dataSet config="debug"><source path="D:\development\android\projects\mirabilis\br.com.mirabilis.sqlite\br.com.mirabilis.sqlite\build-types\debug\assets"/></dataSet></merger>
